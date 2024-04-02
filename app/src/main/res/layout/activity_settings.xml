@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:padding="4dp">
+
         <ImageView
             android:id="@+id/back_from_settings"
             android:layout_width="48dp"
@@ -17,6 +18,7 @@
             android:padding="@dimen/medium_padding"
             android:src="@drawable/ic_arrow_back"
             app:tint="@color/header_settings" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +31,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="@dimen/item_height_settings"
         android:layout_marginTop="24dp">
 
         <TextView
@@ -67,9 +69,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="21dp"
+            android:layout_marginTop="@dimen/margin_top_icon_settings"
+            android:layout_marginEnd="@dimen/margin_end_icon_settings"
+            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
             android:src="@drawable/ic_share"
             app:tint="@color/item_icon_settings" />
     </FrameLayout>
@@ -91,9 +93,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginBottom="21dp"
+            android:layout_marginTop="@dimen/margin_top_icon_settings"
+            android:layout_marginEnd="@dimen/margin_end_icon_settings"
+            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
             android:src="@drawable/ic_support"
             app:tint="@color/item_icon_settings" />
     </FrameLayout>
@@ -115,9 +117,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="23dp"
+            android:layout_marginTop="@dimen/margin_top_icon_settings"
+            android:layout_marginEnd="@dimen/margin_end_icon_settings"
+            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
             android:src="@drawable/ic_arrow_forward"
             app:tint="@color/item_icon_settings" />
     </FrameLayout>
