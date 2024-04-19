@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_settings"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,21 +11,20 @@
         android:padding="4dp">
 
         <ImageView
-            android:id="@+id/back_from_settings"
+            android:id="@+id/back_from_settings_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:padding="@dimen/medium_padding"
+            android:padding="12dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/header_settings" />
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
+            style="@style/Header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="12dp"
             android:paddingTop="10dp"
-            android:text="@string/settings"
-            android:textColor="@color/header_settings"
-            android:textSize="@dimen/big_text_size" />
+            android:text="@string/settings" />
     </LinearLayout>
 
     <FrameLayout
@@ -35,21 +33,20 @@
         android:layout_marginTop="24dp">
 
         <TextView
+            style="@style/SettingsItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/item_vertical_padding_settings"
-            android:layout_marginStart="@dimen/medium_padding"
-            android:text="@string/dark_theme"
-            android:textColor="@color/item_name_settings"
-            android:textSize="@dimen/medium_text_size" />
+            android:text="@string/dark_theme" />
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="56dp"
+            android:layout_height="40dp"
             android:layout_gravity="end"
-            android:layout_marginTop="21dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="22dp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="11dp"
+            app:thumbTint="@color/YP_text_gray"
+            app:trackTint="@color/YP_light_gray" />
     </FrameLayout>
 
     <FrameLayout
@@ -57,23 +54,18 @@
         android:layout_height="@dimen/item_height_settings">
 
         <TextView
+            style="@style/SettingsItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/item_vertical_padding_settings"
-            android:layout_marginStart="@dimen/medium_padding"
-            android:text="@string/share_app"
-            android:textColor="@color/item_name_settings"
-            android:textSize="@dimen/medium_text_size" />
+            android:text="@string/share_app" />
 
         <ImageView
+            android:id="@+id/share_button"
+            style="@style/SettingsItemIcon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_top_icon_settings"
-            android:layout_marginEnd="@dimen/margin_end_icon_settings"
-            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_share"
-            app:tint="@color/item_icon_settings" />
+            />
     </FrameLayout>
 
     <FrameLayout
@@ -81,23 +73,17 @@
         android:layout_height="@dimen/item_height_settings">
 
         <TextView
+            style="@style/SettingsItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/item_vertical_padding_settings"
-            android:layout_marginStart="@dimen/medium_padding"
-            android:text="@string/write_to_support"
-            android:textColor="@color/item_name_settings"
-            android:textSize="@dimen/medium_text_size" />
+            android:text="@string/write_to_support" />
 
         <ImageView
+            android:id="@+id/support_button"
+            style="@style/SettingsItemIcon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_top_icon_settings"
-            android:layout_marginEnd="@dimen/margin_end_icon_settings"
-            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
-            android:src="@drawable/ic_support"
-            app:tint="@color/item_icon_settings" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_support" />
     </FrameLayout>
 
     <FrameLayout
@@ -105,22 +91,16 @@
         android:layout_height="@dimen/item_height_settings">
 
         <TextView
+            style="@style/SettingsItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/item_vertical_padding_settings"
-            android:layout_marginStart="@dimen/medium_padding"
-            android:text="@string/user_agreement"
-            android:textColor="@color/item_name_settings"
-            android:textSize="@dimen/medium_text_size" />
+            android:text="@string/user_agreement" />
 
         <ImageView
+            android:id="@+id/user_agreement_button"
+            style="@style/SettingsItemIcon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_top_icon_settings"
-            android:layout_marginEnd="@dimen/margin_end_icon_settings"
-            android:layout_marginBottom="@dimen/margin_bottom_icon_settings"
-            android:src="@drawable/ic_arrow_forward"
-            app:tint="@color/item_icon_settings" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_forward" />
     </FrameLayout>
 </LinearLayout>
