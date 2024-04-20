@@ -40,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()) searchRequest = s.toString()
+                searchRequest = s.toString()
             }
         }
         searchEditText.addTextChangedListener(searchFieldTextWatcher)
