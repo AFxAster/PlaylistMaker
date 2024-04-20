@@ -2,10 +2,15 @@
 <resources>
     <dimen name="medium_padding">16dp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
-    <dimen name="big_text_size">22sp</dimen>
+    <dimen name="header_text_size">22sp</dimen>
+
+    <dimen name="header_height">56dp</dimen>
+    <dimen name="header_icon_size">48dp</dimen>
+    <dimen name="header_icon_padding">12dp</dimen>
     <dimen name="item_height_settings">61dp</dimen>
-    <dimen name="item_vertical_padding_settings">21dp</dimen>
+
     <dimen name="corner_radius_button_main">16dp</dimen>
+
     <dimen name="margin_top_icon_settings">19dp</dimen>
     <dimen name="margin_end_icon_settings">12dp</dimen>
     <dimen name="margin_bottom_icon_settings">18dp</dimen>
