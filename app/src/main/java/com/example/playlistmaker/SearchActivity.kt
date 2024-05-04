@@ -69,8 +69,8 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.setSelection(searchRequest.length)
     }
 
-    private fun getTracks(): ArrayList<Track> {
-        return arrayListOf(
+    private fun getTracks(): List<Track> {
+        return listOf(
             Track(
                 "Smells Like Teen Spirit",
                 "Nirvana",

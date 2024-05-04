@@ -14,4 +14,6 @@
     <dimen name="margin_top_icon_settings">19dp</dimen>
     <dimen name="margin_end_icon_settings">12dp</dimen>
     <dimen name="margin_bottom_icon_settings">18dp</dimen>
+    
+    <dimen name="track_list_item_artwork_size">45dp</dimen>
 </resources>
