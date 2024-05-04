@@ -39,4 +39,16 @@
         <item name="android:layout_gravity">end</item>
         <item name="tint">?attr/colorPrimary</item>
     </style>
+
+    <style name="ArtworkRoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">2dp</item>
+    </style>
+    
+    <style name="TrackInfoInTrackListItem">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">11sp</item>
+    </style>
 </resources>
