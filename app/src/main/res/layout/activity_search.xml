@@ -39,10 +39,10 @@
             android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:imeOptions="actionDone"
             android:background="@android:color/transparent"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="36dp"
@@ -73,9 +73,28 @@
             app:tint="@color/on_search_field" />
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/track_list_recycler_view"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/track_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp" />
+
+        <ViewStub
+            android:id="@+id/not_found_stub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/placeholder_not_found" />
+
+        <ViewStub
+            android:id="@+id/no_internet_stub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/placeholder_no_internet" />
+
+    </FrameLayout>
 </LinearLayout>
