@@ -13,4 +13,8 @@
     <string name="intent_mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="intent_mail_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="url_user_agreement">https://yandex.ru/legal/practicum_offer</string>
+
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="refresh">Обновить</string>
+    <string name="no_internet_message">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
 </resources>
