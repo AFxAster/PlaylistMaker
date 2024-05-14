@@ -13,16 +13,18 @@ class TracksAdapter : RecyclerView.Adapter<TrackViewHolder>() {
 
                 override fun getNewListSize(): Int = value.size
 
-                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = field[oldItemPosition] == value[newItemPosition]
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                    field[oldItemPosition].trackId == value[newItemPosition].trackId
 
                 override fun areContentsTheSame(
                     oldItemPosition: Int,
                     newItemPosition: Int
-                ): Boolean = true
+                ): Boolean = field[oldItemPosition] == value[newItemPosition]
             })
             field = value
             diffResult.dispatchUpdatesTo(this)
         }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.track_list_item, parent, false)

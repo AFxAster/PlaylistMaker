@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchEditText: EditText
+    private lateinit var tracksRecyclerView: RecyclerView
     private lateinit var notFoundStub: ViewStub
     private lateinit var noInternetStub: ViewStub
 
@@ -79,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
                 request(lastQuery)
             }
         }
-        val tracksRecyclerView: RecyclerView = findViewById(R.id.track_list_recycler_view)
+        tracksRecyclerView = findViewById(R.id.track_list_recycler_view)
         tracksRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
@@ -88,7 +89,6 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 request(searchInput)
-                tracksRecyclerView.scrollToPosition(0)
                 true
             } else
                 false
@@ -123,7 +123,7 @@ class SearchActivity : AppCompatActivity() {
                         tracksAdapter.trackList = response.body()!!.results
                         notFoundStub.visibility = View.GONE
                         noInternetStub.visibility = View.GONE
-
+                        tracksRecyclerView.scrollToPosition(0)
                     } else {
                         tracksAdapter.trackList = emptyList()
                         notFoundStub.visibility = View.VISIBLE
