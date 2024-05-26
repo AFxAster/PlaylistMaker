@@ -2,4 +2,7 @@
 <resources>
     <color name="background_search_field">@color/YP_white</color>
     <color name="on_search_field">@color/YP_black</color>
+
+    <color name="theme_switcher_thumb">@color/YP_blue</color>
+    <color name="theme_switcher_track">@color/YP_blue_light</color>
 </resources>
