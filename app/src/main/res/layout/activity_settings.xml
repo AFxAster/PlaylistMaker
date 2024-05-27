@@ -38,15 +38,16 @@
             android:layout_height="wrap_content"
             android:text="@string/dark_theme" />
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/theme_switcher"
             android:layout_width="56dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="11dp"
-            app:thumbTint="@color/YP_text_gray"
-            app:trackTint="@color/YP_light_gray" />
+            app:thumbTint="@color/theme_switcher_thumb"
+            app:trackTint="@color/theme_switcher_track" />
     </FrameLayout>
 
     <FrameLayout
