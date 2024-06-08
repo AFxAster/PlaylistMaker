@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.AudioPlayerActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
 import com.example.playlistmaker.TracksAdapter
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,7 +41,6 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchInput = SEARCH_INPUT_DEFAULT
     private var lastQuery = ""
-    private val SEARCH_HISTORY_FILE = "SEARCH_HISTORY_FILE"
     private val iTunesService = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -120,7 +122,12 @@ class SearchActivity : AppCompatActivity() {
     private fun initRecyclerViews() {
         searchHistory = SearchHistory(getSharedPreferences(SEARCH_HISTORY_FILE, MODE_PRIVATE))
 
-        searchedTracksAdapter.onTrackClick = { searchHistory.add(it) }
+        searchedTracksAdapter.onTrackClick = {
+            searchHistory.add(it)
+            val audioPlayerIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+            audioPlayerIntent.putExtra(TRACK_KEY, Gson().toJson(it))
+            startActivity(audioPlayerIntent)
+        }
         searchedTracksRecyclerView = findViewById(R.id.searched_tracks_recycler_view)
         searchedTracksRecyclerView.apply {
             layoutManager =
@@ -134,6 +141,9 @@ class SearchActivity : AppCompatActivity() {
         }
 
         tracksHistoryAdapter.onTrackClick = {
+            val audioPlayerIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+            audioPlayerIntent.putExtra(TRACK_KEY, Gson().toJson(it))
+            startActivity(audioPlayerIntent)
             searchHistory.add(it)
             trackList = searchHistory.getHistoryList()
         }
@@ -212,5 +222,7 @@ class SearchActivity : AppCompatActivity() {
         const val LAST_QUERY_KEY = "LAST_QUERY"
         const val SEARCH_INPUT_DEFAULT = ""
         const val BASE_URL = "https://itunes.apple.com"
+        const val SEARCH_HISTORY_FILE = "SEARCH_HISTORY_FILE"
+        const val TRACK_KEY = "TRACK_KEY"
     }
 }
