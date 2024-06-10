@@ -5,4 +5,6 @@
 
     <color name="theme_switcher_thumb">@color/YP_blue</color>
     <color name="theme_switcher_track">@color/YP_blue_light</color>
+
+    <color name="audio_player_additional_button">@color/YP_white_transparent_25</color>
 </resources>
