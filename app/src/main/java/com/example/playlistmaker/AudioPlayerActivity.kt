@@ -1,13 +1,11 @@
 package com.example.playlistmaker
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Group
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 
@@ -47,20 +45,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         val trackCountryTextView: TextView = findViewById(R.id.track_country)
         trackCountryTextView.text = track.country
 
-        if (track.collectionName == null) {
-            findViewById<Group>(R.id.collection_section).visibility = View.GONE
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(artworkImageView.parent as ConstraintLayout)
-            constraintSet.connect(R.id.label_release_year, ConstraintSet.TOP,
-                trackTimeTextView.id, ConstraintSet.BOTTOM)
-            constraintSet.applyTo(artworkImageView.parent as ConstraintLayout)
-        } else {
+        if (track.collectionName != null) {
             val trackCollectionTextView: TextView = findViewById(R.id.track_collection)
             trackCollectionTextView.text = track.collectionName
+            findViewById<Group>(R.id.collection_section).isVisible = true
         }
     }
 
-    companion object {
+    private companion object {
         const val TRACK_KEY = "TRACK_KEY"
     }
 }
