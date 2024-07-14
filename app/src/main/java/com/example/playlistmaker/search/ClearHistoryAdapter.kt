@@ -7,7 +7,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 
-class ClearHistoryAdapter(val onClearButton: () -> Unit) :
+class ClearHistoryAdapter(private val onClearListener: OnClearListener) :
     RecyclerView.Adapter<ClearHistoryAdapter.ClearHistoryHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClearHistoryHolder {
         val view = LayoutInflater.from(parent.context)
@@ -17,7 +17,7 @@ class ClearHistoryAdapter(val onClearButton: () -> Unit) :
 
     override fun onBindViewHolder(holder: ClearHistoryHolder, position: Int) {
         holder.clearButton.setOnClickListener {
-            onClearButton()
+            onClearListener.onClear()
         }
     }
 
@@ -27,4 +27,7 @@ class ClearHistoryAdapter(val onClearButton: () -> Unit) :
         val clearButton: Button = itemView.findViewById(R.id.clear_history_button)
     }
 
+    fun interface OnClearListener {
+        fun onClear()
+    }
 }

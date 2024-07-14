@@ -102,5 +102,14 @@
             android:layout_height="match_parent"
             android:layout="@layout/placeholder_no_internet" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="@dimen/search_progress_bar"
+            android:layout_height="@dimen/search_progress_bar"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="140dp"
+            android:indeterminateTint="@color/YP_blue"
+            android:visibility="gone" />
+
     </FrameLayout>
 </LinearLayout>
