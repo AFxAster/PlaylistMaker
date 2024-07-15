@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.ViewStub
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -15,6 +13,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -102,24 +101,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchEditText = findViewById(R.id.search_edit_text)
-        val searchFieldTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                clearSearchFieldButton.isVisible = s.isNotEmpty()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                searchInput = s.toString()
-                if (searchInput.isBlank()) {
-                    showHistory()
-                } else {
-                    showProgressBar()
-                    debounceRequest()
-                }
+        searchEditText.doOnTextChanged { text, _, _, _ ->
+            searchInput = text?.toString() ?: ""
+            clearSearchFieldButton.isVisible = searchInput.isNotEmpty()
+            if (searchInput.isBlank()) {
+                showHistory()
+            } else {
+                showProgressBar()
+                debounceRequest()
             }
         }
-        searchEditText.addTextChangedListener(searchFieldTextWatcher)
     }
 
     private fun initRecyclerViews() {
