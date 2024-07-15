@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/YP_text_gray</item>
@@ -7,6 +7,7 @@
         <item name="colorOnBackground">@color/YP_black</item>
         <item name="android:colorBackground">?attr/backgroundColor</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textColorHighlight">@color/YP_blue_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

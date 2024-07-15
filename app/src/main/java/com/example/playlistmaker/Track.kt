@@ -13,6 +13,7 @@ data class Track(
     val releaseDate: Date,
     val primaryGenreName: String,
     val country: String,
+    val previewUrl: String
 ) {
     val collectionName: String? = null
         get() = if (field?.endsWith(" - Single") == true)

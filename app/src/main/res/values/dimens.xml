@@ -21,4 +21,6 @@
     <dimen name="audio_player_subinfo_sections_space">17dp</dimen>
     <dimen name="audio_player_play_button_size">84dp</dimen>
     <dimen name="audio_player_additional_button_size">51dp</dimen>
+
+    <dimen name="search_progress_bar">44dp</dimen>
 </resources>
