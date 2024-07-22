@@ -1,10 +1,12 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.settings
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
+import com.example.playlistmaker.ui.App
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
@@ -45,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher: SwitchMaterial = findViewById(R.id.theme_switcher)
         themeSwitcher.isChecked =
-            (applicationContext as App).darkThemeEnabled
+            (applicationContext as App).isDarkThemeEnabled
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
         }

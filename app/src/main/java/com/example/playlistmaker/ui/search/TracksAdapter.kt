@@ -1,12 +1,14 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.presentation.model.TrackUI
 
 class TracksAdapter : RecyclerView.Adapter<TrackViewHolder>() {
-    var trackList: List<Track> = emptyList()
+    var trackList: List<TrackUI> = emptyList()
         set(value) {
             val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun getOldListSize(): Int = field.size

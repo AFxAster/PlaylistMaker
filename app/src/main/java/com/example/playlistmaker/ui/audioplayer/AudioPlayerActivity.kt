@@ -1,6 +1,5 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.audioplayer
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,29 +9,37 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.presentation.mapper.toPlayerTrackUI
+import com.example.playlistmaker.presentation.model.PlayerTrackUI
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
 
-    private lateinit var track: Track
-    private var playerState = PLAYER_STATE_DEFAULT
-    private val mediaPlayer = MediaPlayer()
+    private lateinit var trackUI: PlayerTrackUI
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var playProgressTextView: TextView
     private lateinit var playButton: ImageView
     private val playProgressRefreshRunnable = object : Runnable {
         override fun run() {
+            handler.postDelayed(this, REFRESH_PLAY_PROGRESS_DELAY)
+            val position = audioPlayerInteractor.getCurrentPosition() ?: return
             playProgressTextView.text =
                 SimpleDateFormat(
                     "m:ss",
                     Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
-            handler.postDelayed(this, REFRESH_PLAY_PROGRESS_DELAY)
+                ).format(position)
         }
     }
 
+    private val audioPlayerInteractor: AudioPlayerInteractor =
+        Creator.provideAudioPlayerInteractor()
+    private var isPlaying = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,77 +49,76 @@ class AudioPlayerActivity : AppCompatActivity() {
         backButton.setOnClickListener { finish() }
 
         val jsonTrack = intent.getStringExtra(TRACK_KEY) ?: ""
-        track = Gson().fromJson(jsonTrack, Track::class.java)
+        trackUI = Gson().fromJson(jsonTrack, Track::class.java).toPlayerTrackUI()
+        showInfo()
 
-        initInfo()
+        playProgressTextView = findViewById(R.id.play_progress)
+        playButton = findViewById(R.id.play_button)
+        playButton.apply {
+            setOnClickListener {
+                if (isPlaying) pausePlayer()
+                else resumePlayer()
+            }
+            isClickable = false
+        }
+
         initPlayer()
+        handler.postDelayed(playProgressRefreshRunnable, REFRESH_PLAY_PROGRESS_DELAY)
     }
 
     private fun initPlayer() {
-        playButton = findViewById(R.id.play_button)
-        playProgressTextView = findViewById(R.id.play_progress)
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = PLAYER_STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
+        audioPlayerInteractor.initWithSource(
+            src = trackUI.previewUrl,
+            onPrepared = {
+                playButton.isClickable = true
+            })
+        audioPlayerInteractor.setOnCompletionListener {
             playButton.setImageResource(R.drawable.ic_play)
-            handler.removeCallbacks(playProgressRefreshRunnable)
+            isPlaying = false
             playProgressTextView.text = "0:00"
-            playerState = PLAYER_STATE_PREPARED
-        }
-
-        playButton.setOnClickListener {
-            when (playerState) {
-                PLAYER_STATE_PLAYING -> pausePlayer()
-                PLAYER_STATE_PREPARED, PLAYER_STATE_PAUSED -> resumePlayer()
-            }
         }
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        audioPlayerInteractor.pause()
         playButton.setImageResource(R.drawable.ic_play)
-        handler.removeCallbacks(playProgressRefreshRunnable)
-        playerState = PLAYER_STATE_PAUSED
+        isPlaying = false
     }
 
     private fun resumePlayer() {
-        mediaPlayer.start()
+        audioPlayerInteractor.start()
         playButton.setImageResource(R.drawable.ic_pause)
-        handler.postDelayed(playProgressRefreshRunnable, REFRESH_PLAY_PROGRESS_DELAY)
-        playerState = PLAYER_STATE_PLAYING
+        isPlaying = true
     }
 
-    private fun initInfo() {
+    private fun showInfo() {
         val artworkImageView: ImageView = findViewById(R.id.artwork)
         Glide.with(this)
-            .load(track.getArtworkUrl512())
+            .load(trackUI.artworkUrl512)
             .placeholder(R.drawable.ic_placeholder)
             .into(artworkImageView)
 
         val trackNameTextView: TextView = findViewById(R.id.track_name)
-        trackNameTextView.text = track.trackName
+        trackNameTextView.text = trackUI.trackName
 
         val artistNameTextView: TextView = findViewById(R.id.artist_name)
-        artistNameTextView.text = track.artistName
+        artistNameTextView.text = trackUI.artistName
 
         val trackTimeTextView: TextView = findViewById(R.id.track_time)
-        trackTimeTextView.text = track.getFormattedTime()
+        trackTimeTextView.text = trackUI.trackTime
 
         val trackReleaseTextView: TextView = findViewById(R.id.track_release_year)
-        trackReleaseTextView.text = track.getReleaseYear()
+        trackReleaseTextView.text = trackUI.releaseYear
 
         val trackGenreTextView: TextView = findViewById(R.id.track_genre)
-        trackGenreTextView.text = track.primaryGenreName
+        trackGenreTextView.text = trackUI.primaryGenreName
 
         val trackCountryTextView: TextView = findViewById(R.id.track_country)
-        trackCountryTextView.text = track.country
+        trackCountryTextView.text = trackUI.country
 
-        if (track.collectionName != null) {
+        if (trackUI.collectionName != null) {
             val trackCollectionTextView: TextView = findViewById(R.id.track_collection)
-            trackCollectionTextView.text = track.collectionName
+            trackCollectionTextView.text = trackUI.collectionName
             findViewById<Group>(R.id.collection_section).isVisible = true
         }
     }
@@ -120,19 +126,16 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         pausePlayer()
+        handler.removeCallbacks(playProgressRefreshRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        audioPlayerInteractor.release()
     }
 
     private companion object {
         const val TRACK_KEY = "TRACK_KEY"
-        const val PLAYER_STATE_DEFAULT = 0
-        const val PLAYER_STATE_PREPARED = 1
-        const val PLAYER_STATE_PLAYING = 2
-        const val PLAYER_STATE_PAUSED = 3
         const val REFRESH_PLAY_PROGRESS_DELAY = 300L
     }
 }
