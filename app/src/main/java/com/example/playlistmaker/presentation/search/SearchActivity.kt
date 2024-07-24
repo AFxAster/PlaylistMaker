@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search
+package com.example.playlistmaker.presentation.search
 
 import android.content.Context
 import android.content.Intent
@@ -22,9 +22,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.api.GetTracksInteractor
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.presentation.audioplayer.AudioPlayerActivity
 import com.example.playlistmaker.presentation.mapper.toTrackPresentation
 import com.example.playlistmaker.presentation.model.TrackUI
-import com.example.playlistmaker.ui.audioplayer.AudioPlayerActivity
 import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {

@@ -14,14 +14,14 @@ import com.example.playlistmaker.domain.api.AudioPlayerInteractor
 import com.example.playlistmaker.domain.api.GetTracksInteractor
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.api.ThemeSaverInteractor
+import com.example.playlistmaker.domain.interactor.AudioPlayerInteractorImpl
+import com.example.playlistmaker.domain.interactor.GetTracksInteractorImpl
+import com.example.playlistmaker.domain.interactor.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.interactor.ThemeSaverInteractorImpl
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.domain.repository.ThemeSaverRepository
 import com.example.playlistmaker.domain.repository.TracksRepository
-import com.example.playlistmaker.domain.usecase.AudioPlayerInteractorImpl
-import com.example.playlistmaker.domain.usecase.GetTracksInteractorImpl
-import com.example.playlistmaker.domain.usecase.SearchHistoryInteractorImpl
-import com.example.playlistmaker.domain.usecase.ThemeSaverInteractorImpl
 
 object Creator {
     private const val SETTINGS_SHARED_PREFERENCES = "SETTINGS_SHARED_PREFERENCES"

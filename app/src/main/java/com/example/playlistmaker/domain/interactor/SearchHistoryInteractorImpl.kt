@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.usecase
+package com.example.playlistmaker.domain.interactor
 
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.entity.Track

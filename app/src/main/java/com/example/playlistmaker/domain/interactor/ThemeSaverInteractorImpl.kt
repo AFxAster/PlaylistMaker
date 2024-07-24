@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.usecase
+package com.example.playlistmaker.domain.interactor
 
 import com.example.playlistmaker.domain.api.ThemeSaverInteractor
 import com.example.playlistmaker.domain.repository.ThemeSaverRepository
