@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.presentation.search
 
 import android.content.Context
 import android.content.Intent
@@ -17,17 +17,15 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.AudioPlayerActivity
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.Track
-import com.example.playlistmaker.TrackViewHolder
-import com.example.playlistmaker.TracksAdapter
+import com.example.playlistmaker.domain.api.GetTracksInteractor
+import com.example.playlistmaker.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.presentation.audioplayer.AudioPlayerActivity
+import com.example.playlistmaker.presentation.mapper.toTrackPresentation
+import com.example.playlistmaker.presentation.model.TrackUI
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -37,21 +35,43 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var notFoundStub: ViewStub
     private lateinit var noInternetStub: ViewStub
     private lateinit var progressBar: ProgressBar
+    private lateinit var refreshButton: Button
 
-    private lateinit var searchHistory: SearchHistory
     private val searchedTracksAdapter = TracksAdapter()
     private val tracksHistoryAdapter = TracksAdapter()
 
     private var searchInput = SEARCH_INPUT_DEFAULT
 
-    private val iTunesService = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(ITunesApi::class.java)
     private val handler = Handler(Looper.getMainLooper())
-    private val requestRunnable = Runnable { request(searchInput) }
+    private val requestRunnable = Runnable {
+        getTracksInteractor.getTracks(searchInput, tracksConsumer)
+    }
     private var isClickAllowed = true
+
+    private val getTracksInteractor: GetTracksInteractor =
+        Creator.provideGetTracksInteractor()
+    private val searchHistoryInteractor: SearchHistoryInteractor =
+        Creator.provideSearchHistoryInteractor()
+    private val tracksConsumer: GetTracksInteractor.TracksConsumer =
+        object : GetTracksInteractor.TracksConsumer {
+            override fun onTracksSuccess(tracks: List<Track>) {
+                runOnUiThread {
+                    if (tracks.isNotEmpty())
+                        showFoundTracks(tracks.map { track -> track.toTrackPresentation() })
+                    else
+                        showNotFoundStub()
+                }
+            }
+
+            override fun onError() {
+                runOnUiThread {
+                    showNoInternetPlaceholder(onRefresh = {
+                        showProgressBar()
+                        getTracksInteractor.getTracks(searchInput, consumer = this)
+                    })
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +85,7 @@ class SearchActivity : AppCompatActivity() {
         notFoundStub = findViewById(R.id.not_found_stub)
         noInternetStub = findViewById(R.id.no_internet_stub)
         noInternetStub.setOnInflateListener { _, view ->
-            val refreshButton: Button = view.findViewById(R.id.refresh_button)
-            refreshButton.setOnClickListener {
-                request(searchInput)
-            }
+            refreshButton = view.findViewById(R.id.refresh_button)
         }
         progressBar = findViewById(R.id.progress_bar)
 
@@ -76,18 +93,6 @@ class SearchActivity : AppCompatActivity() {
         initRecyclerViews()
 
         showHistory()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_INPUT_KEY, searchInput)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchInput = savedInstanceState.getString(SEARCH_INPUT_KEY, SEARCH_INPUT_DEFAULT)
-        searchEditText.setText(searchInput)
-        searchEditText.setSelection(searchInput.length)
     }
 
     private fun initSearchField() {
@@ -114,20 +119,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerViews() {
-        searchHistory = SearchHistory(getSharedPreferences(SEARCH_HISTORY_FILE, MODE_PRIVATE))
+        searchedTracksAdapter.onTrackClickListener =
+            TrackViewHolder.OnTrackClickListener(::onTrackClick)
 
-        val onTrackClickListener: TrackViewHolder.OnTrackClickListener =
-            TrackViewHolder.OnTrackClickListener {
-                if (!isClickDebounceAllowed())
-                    return@OnTrackClickListener
-
-                val audioPlayerIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-                audioPlayerIntent.putExtra(TRACK_KEY, Gson().toJson(it))
-                startActivity(audioPlayerIntent)
-                searchHistory.add(it)
-            }
-
-        searchedTracksAdapter.onTrackClickListener = onTrackClickListener
         searchedTracksRecyclerView = findViewById(R.id.searched_tracks_recycler_view)
         searchedTracksRecyclerView.apply {
             layoutManager =
@@ -136,11 +130,13 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val clearHistoryAdapter = ClearHistoryAdapter {
-            searchHistory.clear()
+            searchHistoryInteractor.clear()
             tracksHistoryRecyclerView.isVisible = false
         }
 
-        tracksHistoryAdapter.onTrackClickListener = onTrackClickListener
+        tracksHistoryAdapter.onTrackClickListener =
+            TrackViewHolder.OnTrackClickListener(::onTrackClick)
+
         tracksHistoryRecyclerView = findViewById(R.id.tracks_history_recycler_view)
         tracksHistoryRecyclerView.apply {
             layoutManager =
@@ -150,13 +146,17 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun showNoInternetPlaceholder() {
+    private fun showNoInternetPlaceholder(onRefresh: () -> Unit) {
         noInternetStub.isVisible = true
         progressBar.isVisible = false
+        searchedTracksRecyclerView.isVisible = false
+        tracksHistoryRecyclerView.isVisible = false
+        refreshButton.setOnClickListener { onRefresh() }
     }
 
     private fun showHistory() {
-        tracksHistoryAdapter.trackList = searchHistory.getHistoryList()
+        tracksHistoryAdapter.trackList =
+            searchHistoryInteractor.getTracks().map { it.toTrackPresentation() }
         tracksHistoryRecyclerView.isVisible = tracksHistoryAdapter.trackList.isNotEmpty()
         tracksHistoryRecyclerView.scrollToPosition(0)
 
@@ -166,11 +166,11 @@ class SearchActivity : AppCompatActivity() {
         progressBar.isVisible = false
     }
 
-    private fun showFoundTracks(trackList: List<Track>) {
-        searchedTracksRecyclerView.isVisible = true
-        progressBar.isVisible = false
+    private fun showFoundTracks(trackList: List<TrackUI>) {
         searchedTracksAdapter.trackList = trackList
+        searchedTracksRecyclerView.isVisible = true
         searchedTracksRecyclerView.scrollToPosition(0)
+        progressBar.isVisible = false
     }
 
     private fun showNotFoundStub() {
@@ -202,36 +202,55 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(requestRunnable, REQUEST_DELAY)
     }
 
-    private fun request(query: String) {
-        if (query.isBlank()) return
-        showProgressBar()
-        iTunesService.getTracks(query).enqueue(object : Callback<ITunesResponse> {
-            override fun onResponse(
-                call: Call<ITunesResponse>,
-                response: Response<ITunesResponse>
-            ) {
-                if (response.code() == 200) {
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        showFoundTracks(response.body()!!.results)
+    private fun onTrackClick(trackId: String) {
+        if (!isClickDebounceAllowed())
+            return
+        val onTrackDetailsResponse = object : GetTracksInteractor.TrackByIdConsumer {
+            override fun onTrackByIdSuccess(tracks: Track) {
+                searchHistoryInteractor.addTrack(tracks)
+                runOnUiThread {
+                    progressBar.isVisible = false
+                    if (searchInput.isBlank()) {
+                        tracksHistoryRecyclerView.isVisible = true
                     } else {
-                        showNotFoundStub()
+                        searchedTracksRecyclerView.isVisible = true
                     }
-                } else {
-                    showNoInternetPlaceholder()
                 }
+
+                val audioPlayerIntent =
+                    Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+                audioPlayerIntent.putExtra(TRACK_KEY, Gson().toJson(tracks))
+                startActivity(audioPlayerIntent)
             }
 
-            override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                showNoInternetPlaceholder()
+            override fun onError() {
+                runOnUiThread {
+                    showNoInternetPlaceholder(onRefresh = {
+                        showProgressBar()
+                        getTracksInteractor.getTrackById(trackId, consumer = this)
+                    })
+                }
             }
-        })
+        }
+
+        getTracksInteractor.getTrackById(trackId, onTrackDetailsResponse)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_INPUT_KEY, searchInput)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchInput = savedInstanceState.getString(SEARCH_INPUT_KEY, SEARCH_INPUT_DEFAULT)
+        searchEditText.setText(searchInput)
+        searchEditText.setSelection(searchInput.length)
     }
 
     private companion object {
         const val SEARCH_INPUT_KEY = "SEARCH_REQUEST"
         const val SEARCH_INPUT_DEFAULT = ""
-        const val BASE_URL = "https://itunes.apple.com"
-        const val SEARCH_HISTORY_FILE = "SEARCH_HISTORY_FILE"
         const val TRACK_KEY = "TRACK_KEY"
         const val REQUEST_DELAY = 2000L
         const val CLICK_DEBOUNCE_DELAY = 1000L
