@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.TrackListItemBinding
 import com.example.playlistmaker.search.presentation.model.TrackUI
 
 class TracksAdapter : RecyclerView.Adapter<TrackViewHolder>() {
@@ -30,9 +30,8 @@ class TracksAdapter : RecyclerView.Adapter<TrackViewHolder>() {
     var onTrackClickListener: TrackViewHolder.OnTrackClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.track_list_item, parent, false)
-        return TrackViewHolder(view)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        return TrackViewHolder(TrackListItemBinding.inflate(layoutInflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
