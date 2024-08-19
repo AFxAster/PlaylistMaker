@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.audioplayer.presentation.model.PlayerTrackUI
@@ -12,10 +11,15 @@ import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
 import com.example.playlistmaker.audioplayer.presentation.viewmodel.AudioPlayerViewModel
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
-    private lateinit var viewModel: AudioPlayerViewModel
+    private val viewModel: AudioPlayerViewModel by viewModel {
+        val trackId = intent.getStringExtra(TRACK_ID_KEY) ?: ""
+        parametersOf(trackId)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +39,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             else
                 viewModel.play()
         }
-
-        val trackId = intent.getStringExtra(TRACK_ID_KEY) ?: ""
-
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory(trackId)
-        )[AudioPlayerViewModel::class.java]
 
         viewModel.getState().observe(this, ::render)
 

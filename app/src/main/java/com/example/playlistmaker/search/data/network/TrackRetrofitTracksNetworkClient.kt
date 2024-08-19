@@ -4,15 +4,8 @@ import com.example.playlistmaker.search.data.TracksNetworkClient
 import com.example.playlistmaker.search.data.dto.GetTrackByIdRequest
 import com.example.playlistmaker.search.data.dto.GetTracksRequest
 import com.example.playlistmaker.search.data.dto.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class TrackRetrofitTracksNetworkClient : TracksNetworkClient {
-    private val api = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(ITunesApi::class.java)
+class TrackRetrofitTracksNetworkClient(private val api: ITunesApi) : TracksNetworkClient {
 
     override fun getTracks(requestParams: Any): Response {
         return if (requestParams is GetTracksRequest) {
@@ -42,9 +35,5 @@ class TrackRetrofitTracksNetworkClient : TracksNetworkClient {
         } else {
             Response().apply { responseCode = 400 }
         }
-    }
-
-    private companion object {
-        const val BASE_URL = "https://itunes.apple.com"
     }
 }

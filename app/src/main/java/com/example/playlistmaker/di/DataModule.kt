@@ -1,0 +1,34 @@
+package com.example.playlistmaker.di
+
+import android.content.Context
+import android.content.SharedPreferences
+import android.media.MediaPlayer
+import com.example.playlistmaker.search.data.TracksNetworkClient
+import com.example.playlistmaker.search.data.network.ITunesApi
+import com.example.playlistmaker.search.data.network.TrackRetrofitTracksNetworkClient
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+val dataModule = module {
+    single<TracksNetworkClient> {
+        TrackRetrofitTracksNetworkClient(api = get())
+    }
+
+    single<ITunesApi> {
+        Retrofit.Builder()
+            .baseUrl("https://itunes.apple.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ITunesApi::class.java)
+    }
+
+    factory<SharedPreferences> { params ->
+        androidContext().getSharedPreferences(params.get(), Context.MODE_PRIVATE)
+    }
+
+    factory<MediaPlayer> {
+        MediaPlayer()
+    }
+}

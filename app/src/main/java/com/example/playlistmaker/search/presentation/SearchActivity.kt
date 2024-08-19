@@ -10,7 +10,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
@@ -19,6 +18,7 @@ import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.search.presentation.model.TrackUI
 import com.example.playlistmaker.search.presentation.state.SearchState
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
@@ -29,12 +29,7 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
-    private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
-    }
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +52,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-
     private fun initSearchField() {
         binding.clearSearchFieldButton.setOnClickListener {
             binding.searchEditText.setText("")
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.clearSearchFieldButton.windowToken, 0)
+            inputMethodManager?.hideSoftInputFromWindow(
+                binding.clearSearchFieldButton.windowToken,
+                0
+            )
         }
         binding.searchEditText.setText(viewModel.lastQuery)
         binding.searchEditText.doOnTextChanged { text, _, _, _ ->

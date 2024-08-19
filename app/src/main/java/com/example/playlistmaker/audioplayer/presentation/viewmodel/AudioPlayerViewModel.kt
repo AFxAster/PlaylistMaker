@@ -3,16 +3,12 @@ package com.example.playlistmaker.audioplayer.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.audioplayer.domain.api.AudioPlayerInteractor
 import com.example.playlistmaker.audioplayer.domain.api.StatusObserver
 import com.example.playlistmaker.audioplayer.presentation.mapper.toFormattedPosition
 import com.example.playlistmaker.audioplayer.presentation.mapper.toPlayerTrackUI
 import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.entity.Track
 
@@ -85,19 +81,5 @@ class AudioPlayerViewModel(
     override fun onCleared() {
         super.onCleared()
         audioPlayerInteractor.release()
-    }
-
-    companion object {
-        fun getViewModelFactory(trackId: String): ViewModelProvider.Factory {
-            return viewModelFactory {
-                initializer {
-                    AudioPlayerViewModel(
-                        trackId,
-                        Creator.provideTracksInteractor(),
-                        Creator.provideAudioPlayerInteractor()
-                    )
-                }
-            }
-        }
     }
 }
