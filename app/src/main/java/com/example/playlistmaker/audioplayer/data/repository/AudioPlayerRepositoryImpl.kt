@@ -3,11 +3,11 @@ package com.example.playlistmaker.audioplayer.data.repository
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import com.example.playlistmaker.audioplayer.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.audioplayer.domain.api.StatusObserver
 import com.example.playlistmaker.audioplayer.domain.repository.AudioPlayerRepository
 
 class AudioPlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : AudioPlayerRepository {
-    private var statusObserver: AudioPlayerInteractor.StatusObserver? = null
+    private var statusObserver: StatusObserver? = null
     private val handler = Handler(Looper.getMainLooper())
     private val playProgressRefreshRunnable = object : Runnable {
         override fun run() {
@@ -24,7 +24,7 @@ class AudioPlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : AudioPla
         mediaPlayer.prepareAsync()
     }
 
-    override fun setStatusObserver(statusObserver: AudioPlayerInteractor.StatusObserver) {
+    override fun setStatusObserver(statusObserver: StatusObserver) {
         this.statusObserver = statusObserver
 
         mediaPlayer.setOnPreparedListener {

@@ -1,6 +1,7 @@
 package com.example.playlistmaker.audioplayer.domain.interactor
 
 import com.example.playlistmaker.audioplayer.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.audioplayer.domain.api.StatusObserver
 import com.example.playlistmaker.audioplayer.domain.repository.AudioPlayerRepository
 
 
@@ -11,7 +12,7 @@ class AudioPlayerInteractorImpl(private val audioPlayerRepository: AudioPlayerRe
         audioPlayerRepository.setSource(src)
     }
 
-    override fun setStatusObserver(statusObserver: AudioPlayerInteractor.StatusObserver) {
+    override fun setStatusObserver(statusObserver: StatusObserver) {
         audioPlayerRepository.setStatusObserver(statusObserver)
     }
 

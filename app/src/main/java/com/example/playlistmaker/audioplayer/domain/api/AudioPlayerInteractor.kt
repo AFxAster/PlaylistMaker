@@ -7,12 +7,4 @@ interface AudioPlayerInteractor {
     fun start()
     fun pause()
     fun release()
-
-    interface StatusObserver {
-        fun onPrepared()
-        fun onPlay(position: Int)
-        fun onProgress(position: Int)
-        fun onPause(position: Int)
-        fun onCompletion()
-    }
 }

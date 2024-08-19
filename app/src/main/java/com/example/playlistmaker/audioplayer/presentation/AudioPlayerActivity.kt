@@ -1,4 +1,4 @@
-package com.example.playlistmaker.audioplayer.ui
+package com.example.playlistmaker.audioplayer.presentation
 
 import android.os.Bundle
 import android.widget.Button

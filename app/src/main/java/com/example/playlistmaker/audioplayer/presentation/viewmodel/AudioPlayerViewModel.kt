@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.audioplayer.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.audioplayer.domain.api.StatusObserver
 import com.example.playlistmaker.audioplayer.presentation.mapper.toFormattedPosition
 import com.example.playlistmaker.audioplayer.presentation.mapper.toPlayerTrackUI
 import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
@@ -57,8 +58,7 @@ class AudioPlayerViewModel(
 
     private fun preparePlayer(track: Track) {
         audioPlayerInteractor.setSource(track.previewUrl)
-        audioPlayerInteractor.setStatusObserver(object :
-            AudioPlayerInteractor.StatusObserver {
+        audioPlayerInteractor.setStatusObserver(object : StatusObserver {
             override fun onPrepared() {
                 state.value = AudioPlayerState.Content(track.toPlayerTrackUI())
             }
