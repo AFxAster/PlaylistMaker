@@ -2,10 +2,10 @@ package com.example.playlistmaker.settings.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -18,10 +18,7 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        val viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
+        val viewModel: SettingsViewModel by viewModel()
 
 
         binding.shareButton.setOnClickListener {
