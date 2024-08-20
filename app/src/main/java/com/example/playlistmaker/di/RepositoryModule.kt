@@ -12,7 +12,6 @@ import com.example.playlistmaker.settings.data.repository.ThemeSaverRepositoryIm
 import com.example.playlistmaker.settings.domain.repository.LinkRepository
 import com.example.playlistmaker.settings.domain.repository.SharingRepository
 import com.example.playlistmaker.settings.domain.repository.ThemeSaverRepository
-import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -25,11 +24,11 @@ val repositoryModule = module {
     }
 
     single<ThemeSaverRepository> {
-        ThemeSaverRepositoryImpl(sharedPreferences = get { parametersOf("SETTINGS_SHARED_PREFERENCES") })
+        ThemeSaverRepositoryImpl(sharedPreferences = get())
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(sharedPreferences = get { parametersOf("SEARCH_HISTORY_SHARED_PREFERENCES") })
+        SearchHistoryRepositoryImpl(sharedPreferences = get())
     }
 
     single<TracksRepository> {

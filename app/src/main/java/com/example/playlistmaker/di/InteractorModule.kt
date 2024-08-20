@@ -13,19 +13,19 @@ import com.example.playlistmaker.settings.domain.interactor.ThemeSaverInteractor
 import org.koin.dsl.module
 
 val interactorModule = module {
-    single<SharingInteractor> {
+    factory<SharingInteractor> {
         SharingInteractorImpl(sharingRepository = get(), linkRepository = get())
     }
 
-    single<ThemeSaverInteractor> {
+    factory<ThemeSaverInteractor> {
         ThemeSaverInteractorImpl(themeSaverRepository = get())
     }
 
-    single<SearchHistoryInteractor> {
+    factory<SearchHistoryInteractor> {
         SearchHistoryInteractorImpl(historyRepository = get())
     }
 
-    single<TracksInteractor> {
+    factory<TracksInteractor> {
         TracksInteractorImpl(tracksRepository = get())
     }
 

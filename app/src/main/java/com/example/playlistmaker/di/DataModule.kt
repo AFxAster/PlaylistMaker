@@ -24,8 +24,8 @@ val dataModule = module {
             .create(ITunesApi::class.java)
     }
 
-    factory<SharedPreferences> { params ->
-        androidContext().getSharedPreferences(params.get(), Context.MODE_PRIVATE)
+    single<SharedPreferences> {
+        androidContext().getSharedPreferences("STORAGE_SHARED_PREFERENCES", Context.MODE_PRIVATE)
     }
 
     factory<MediaPlayer> {
