@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/clear_history_button"
-        style="@style/SupportiveSearchScreenButton"
+        style="@style/SupportiveButton"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_gravity="center_horizontal"
