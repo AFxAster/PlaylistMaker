@@ -1,15 +1,18 @@
 package com.example.playlistmaker.search.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
@@ -20,7 +23,7 @@ import com.example.playlistmaker.search.presentation.state.SearchState
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
     private lateinit var binding: ActivitySearchBinding
 
     private val searchedTracksAdapter = TracksAdapter()
@@ -34,11 +37,18 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
 
-        binding.backFromSearchButton.setOnClickListener {
-            finish()
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.noInternetStub.setOnInflateListener { _, view ->
             val refreshButton: Button = view.findViewById(R.id.refresh_button)
@@ -48,15 +58,14 @@ class SearchActivity : AppCompatActivity() {
         initRecyclerViews()
         initSearchField()
 
-        viewModel.getState().observe(this, ::render)
+        viewModel.getState().observe(viewLifecycleOwner, ::render)
     }
-
 
     private fun initSearchField() {
         binding.clearSearchFieldButton.setOnClickListener {
             binding.searchEditText.setText("")
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(
                 binding.clearSearchFieldButton.windowToken,
                 0
@@ -76,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.searchedTracksRecyclerView.apply {
             layoutManager =
-                LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = searchedTracksAdapter
         }
 
@@ -89,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.tracksHistoryRecyclerView.apply {
             layoutManager =
-                LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter =
                 ConcatAdapter(HistoryHeaderAdapter(), tracksHistoryAdapter, clearHistoryAdapter)
         }
@@ -99,10 +108,10 @@ class SearchActivity : AppCompatActivity() {
         if (!isClickDebounceAllowed())
             return
         viewModel.addTrackToHistory(trackId)
-        val audioPlayerIntent =
-            Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-        audioPlayerIntent.putExtra(TRACK_ID_KEY, trackId)
-        startActivity(audioPlayerIntent)
+        findNavController().navigate(
+            R.id.action_searchFragment_to_audioPlayerActivity,
+            AudioPlayerActivity.createBundleOf(trackId)
+        )
     }
 
     private fun isClickDebounceAllowed(): Boolean {
@@ -189,9 +198,7 @@ class SearchActivity : AppCompatActivity() {
         binding.loading.isVisible = false
     }
 
-
     private companion object {
-        const val TRACK_ID_KEY = "TRACK_ID_KEY"
         const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

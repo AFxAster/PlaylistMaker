@@ -3,6 +3,7 @@ package com.example.playlistmaker.audioplayer.presentation
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
@@ -128,7 +129,10 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.pause()
     }
 
-    private companion object {
-        const val TRACK_ID_KEY = "TRACK_ID_KEY"
+    companion object {
+        private const val TRACK_ID_KEY = "TRACK_ID_KEY"
+        fun createBundleOf(trackId: String): Bundle {
+            return bundleOf(TRACK_ID_KEY to trackId)
+        }
     }
 }

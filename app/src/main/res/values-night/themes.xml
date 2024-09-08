@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Night.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/YP_white</item>
@@ -10,9 +10,4 @@
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Night.Theme.PlaylistMaker" />
-
-    <style name="Theme.PlaylistMaker.MainMenu">
-        <item name="android:colorBackground">@color/YP_black</item>
-        <item name="android:buttonStyle">@style/MenuButton</item>
-    </style>
 </resources>
