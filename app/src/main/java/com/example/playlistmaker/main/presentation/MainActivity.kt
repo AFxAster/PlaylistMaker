@@ -1,12 +1,12 @@
 package com.example.playlistmaker.main.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.library.presentation.LibraryActivity
-import com.example.playlistmaker.search.presentation.SearchActivity
-import com.example.playlistmaker.settings.presentation.SettingsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,16 +14,11 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.searchButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.content) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        binding.libraryButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity, LibraryActivity::class.java))
-        }
-
-        binding.settingsButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-        }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        bottomNavigationView.setupWithNavController(navController)
     }
 }

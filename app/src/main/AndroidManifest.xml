@@ -16,21 +16,12 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".search.presentation.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".library.presentation.LibraryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".settings.presentation.SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".audioplayer.presentation.AudioPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".main.presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.PlaylistMaker.MainMenu">
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

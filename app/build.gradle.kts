@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("io.insert-koin:koin-android:3.3.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
