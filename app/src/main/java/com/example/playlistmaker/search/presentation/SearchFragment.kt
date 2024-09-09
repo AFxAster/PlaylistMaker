@@ -65,7 +65,7 @@ class SearchFragment : Fragment() {
         binding.clearSearchFieldButton.setOnClickListener {
             binding.searchEditText.setText("")
             val inputMethodManager =
-                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(
                 binding.clearSearchFieldButton.windowToken,
                 0
@@ -85,7 +85,7 @@ class SearchFragment : Fragment() {
 
         binding.searchedTracksRecyclerView.apply {
             layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = searchedTracksAdapter
         }
 
@@ -98,7 +98,7 @@ class SearchFragment : Fragment() {
 
         binding.tracksHistoryRecyclerView.apply {
             layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter =
                 ConcatAdapter(HistoryHeaderAdapter(), tracksHistoryAdapter, clearHistoryAdapter)
         }

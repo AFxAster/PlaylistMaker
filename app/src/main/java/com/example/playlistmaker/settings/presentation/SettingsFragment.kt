@@ -48,7 +48,7 @@ class SettingsFragment : Fragment() {
 
 
         viewModel.getIsDarkTheme().observe(viewLifecycleOwner) {
-            (activity?.applicationContext as App).switchTheme(it)
+            (requireActivity().applicationContext as App).switchTheme(it)
         }
     }
 }
