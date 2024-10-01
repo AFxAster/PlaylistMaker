@@ -9,5 +9,6 @@ interface AudioPlayerRepository {
     fun setStatusObserver(statusObserver: StatusObserver)
     fun start()
     fun pause()
+    fun getCurrentPosition(): Int
     fun release()
 }

@@ -7,24 +7,27 @@ import com.example.playlistmaker.search.data.dto.ITunesResponse
 import com.example.playlistmaker.search.data.mapper.toTrack
 import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.domain.repository.TracksRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TracksRepositoryImpl(private val tracksNetworkClient: TracksNetworkClient) :
     TracksRepository {
-    override fun getTracks(query: String): List<Track>? {
+
+    override suspend fun getTracks(query: String): Flow<List<Track>?> = flow {
         val response = tracksNetworkClient.getTracks(requestParams = GetTracksRequest(query))
-        return if (response.responseCode == 200 && response is ITunesResponse) {
-            response.results.map { it.toTrack() }
+        if (response.responseCode == 200 && response is ITunesResponse) {
+            emit(response.results.map { it.toTrack() })
         } else {
-            null
+            emit(null)
         }
     }
 
-    override fun getTrackById(id: String): Track? {
+    override suspend fun getTrackById(id: String): Flow<Track?> = flow {
         val response = tracksNetworkClient.getTrackById(requestParams = GetTrackByIdRequest(id))
-        return if (response.responseCode == 200 && response is ITunesResponse) {
-            response.results.getOrNull(0)?.toTrack()
+        if (response.responseCode == 200 && response is ITunesResponse) {
+            emit(response.results.getOrNull(0)?.toTrack())
         } else {
-            null
+            emit(null)
         }
     }
 }

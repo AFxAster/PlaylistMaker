@@ -6,5 +6,6 @@ interface AudioPlayerInteractor {
     fun prepare()
     fun start()
     fun pause()
+    fun getCurrentPosition(): Int
     fun release()
 }
