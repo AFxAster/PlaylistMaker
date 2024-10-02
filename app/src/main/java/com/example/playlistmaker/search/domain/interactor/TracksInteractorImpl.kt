@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 
 class TracksInteractorImpl(private val tracksRepository: TracksRepository) : TracksInteractor {
 
-    override suspend fun getTracks(query: String): Flow<List<Track>?> =
+    override fun getTracks(query: String): Flow<List<Track>?> =
         tracksRepository.getTracks(query)
 
 
-    override suspend fun getTrackById(id: String): Flow<Track?> =
+    override fun getTrackById(id: String): Flow<Track?> =
         tracksRepository.getTrackById(id)
 }

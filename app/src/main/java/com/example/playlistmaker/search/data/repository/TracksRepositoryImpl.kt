@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 class TracksRepositoryImpl(private val tracksNetworkClient: TracksNetworkClient) :
     TracksRepository {
 
-    override suspend fun getTracks(query: String): Flow<List<Track>?> = flow {
+    override fun getTracks(query: String): Flow<List<Track>?> = flow {
         val response = tracksNetworkClient.getTracks(requestParams = GetTracksRequest(query))
         if (response.responseCode == 200 && response is ITunesResponse) {
             emit(response.results.map { it.toTrack() })
@@ -22,7 +22,7 @@ class TracksRepositoryImpl(private val tracksNetworkClient: TracksNetworkClient)
         }
     }
 
-    override suspend fun getTrackById(id: String): Flow<Track?> = flow {
+    override fun getTrackById(id: String): Flow<Track?> = flow {
         val response = tracksNetworkClient.getTrackById(requestParams = GetTrackByIdRequest(id))
         if (response.responseCode == 200 && response is ITunesResponse) {
             emit(response.results.getOrNull(0)?.toTrack())

@@ -34,14 +34,13 @@ class SearchViewModel(
     fun getState(): LiveData<SearchState> = state
 
     fun debounceRequest(query: String) {
-        if (query.isBlank()) {
-            loadHistory()
-            return
-        }
         state.value = SearchState.Loading
         lastQuery = query
 
         debounceRequestLambda(query)
+        if (query.isBlank()) {
+            loadHistory()
+        }
     }
 
     fun refresh() {
@@ -67,6 +66,7 @@ class SearchViewModel(
     }
 
     private fun request(query: String) {
+        if (query.isBlank()) return
         viewModelScope.launch {
             tracksInteractor.getTracks(query).collect { tracks ->
                 if (tracks == null) {

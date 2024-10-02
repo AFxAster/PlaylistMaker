@@ -27,7 +27,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backFromAudioPlayerButton.setOnClickListener { finish() }
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
         binding.noInternetStub.setOnInflateListener { _, view ->
             val refreshButton: Button = view.findViewById(R.id.refresh_button)
