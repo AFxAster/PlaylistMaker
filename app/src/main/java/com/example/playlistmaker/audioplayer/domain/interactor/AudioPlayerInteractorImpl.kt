@@ -28,6 +28,8 @@ class AudioPlayerInteractorImpl(private val audioPlayerRepository: AudioPlayerRe
         audioPlayerRepository.pause()
     }
 
+    override fun getCurrentPosition(): Int = audioPlayerRepository.getCurrentPosition()
+
     override fun release() {
         audioPlayerRepository.release()
     }

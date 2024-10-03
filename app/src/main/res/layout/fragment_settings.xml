@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context=".settings.presentation.SettingsFragment">
 
-    <TextView
-        style="@style/Header"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingStart="16dp"
-        android:paddingTop="14dp"
-        android:text="@string/settings" />
+        app:contentInsetStart="16dp"
+        app:title="@string/settings"
+        app:titleMarginTop="14dp"
+        app:titleTextAppearance="@style/Header" />
 
     <FrameLayout
         android:layout_width="match_parent"

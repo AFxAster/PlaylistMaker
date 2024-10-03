@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context=".library.presentation.LibraryFragment">
 
-    <TextView
-        style="@style/Header"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingStart="16dp"
-        android:paddingTop="14dp"
-        android:text="@string/library" />
+        app:contentInsetStart="16dp"
+        app:title="@string/library"
+        app:titleMarginTop="14dp"
+        app:titleTextAppearance="@style/Header" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"

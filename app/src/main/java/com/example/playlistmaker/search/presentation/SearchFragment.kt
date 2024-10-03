@@ -2,8 +2,6 @@ package com.example.playlistmaker.search.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,31 +10,37 @@ import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.audioplayer.presentation.AudioPlayerActivity
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.search.presentation.model.TrackUI
 import com.example.playlistmaker.search.presentation.state.SearchState
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
+import com.example.playlistmaker.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     private val searchedTracksAdapter = TracksAdapter()
     private val tracksHistoryAdapter = TracksAdapter()
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var isClickAllowed = true
-
     private val viewModel: SearchViewModel by viewModel()
+
+    private val debounceClick = debounce<String>(
+        delayMillis = CLICK_DEBOUNCE_DELAY,
+        coroutineScope = lifecycleScope,
+        useLastCall = false,
+        action = ::onTrackClick
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        binding = FragmentSearchBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
@@ -81,7 +85,7 @@ class SearchFragment : Fragment() {
 
     private fun initRecyclerViews() {
         searchedTracksAdapter.onTrackClickListener =
-            TrackViewHolder.OnTrackClickListener(::onTrackClick)
+            TrackViewHolder.OnTrackClickListener(debounceClick)
 
         binding.searchedTracksRecyclerView.apply {
             layoutManager =
@@ -94,7 +98,7 @@ class SearchFragment : Fragment() {
         }
 
         tracksHistoryAdapter.onTrackClickListener =
-            TrackViewHolder.OnTrackClickListener(::onTrackClick)
+            TrackViewHolder.OnTrackClickListener(debounceClick)
 
         binding.tracksHistoryRecyclerView.apply {
             layoutManager =
@@ -105,24 +109,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun onTrackClick(trackId: String) {
-        if (!isClickDebounceAllowed())
-            return
         viewModel.addTrackToHistory(trackId)
         findNavController().navigate(
             R.id.action_searchFragment_to_audioPlayerActivity,
             AudioPlayerActivity.createBundleOf(trackId)
         )
-    }
-
-    private fun isClickDebounceAllowed(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({
-                isClickAllowed = true
-            }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
     }
 
     private fun render(state: SearchState) {
