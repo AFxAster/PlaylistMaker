@@ -119,7 +119,7 @@
                     android:background="@drawable/round_button"
                     android:backgroundTint="@color/audio_player_additional_button"
                     android:padding="14dp"
-                    android:src="@drawable/ic_favourite"
+                    android:src="@drawable/ic_outlined_favourite"
                     app:layout_constraintBottom_toBottomOf="@id/play_button"
                     app:layout_constraintEnd_toStartOf="@id/main_content_end"
                     app:layout_constraintStart_toEndOf="@id/play_button"

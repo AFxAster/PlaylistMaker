@@ -1,10 +1,10 @@
 package com.example.playlistmaker.search.data.repository
 
 import android.content.SharedPreferences
+import com.example.playlistmaker.common.entity.Track
 import com.example.playlistmaker.search.data.dto.HistoryTrackDTO
 import com.example.playlistmaker.search.data.mapper.toHistoryTrackDTO
 import com.example.playlistmaker.search.data.mapper.toTrack
-import com.example.playlistmaker.search.domain.entity.Track
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.google.gson.Gson
 

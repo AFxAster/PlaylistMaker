@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.audioplayer.presentation.AudioPlayerActivity
+import com.example.playlistmaker.common.presentation.TracksAdapter
+import com.example.playlistmaker.common.utils.debounce
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.search.presentation.model.TrackUI
 import com.example.playlistmaker.search.presentation.state.SearchState
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
-import com.example.playlistmaker.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {

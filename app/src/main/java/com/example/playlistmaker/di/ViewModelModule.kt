@@ -21,12 +21,13 @@ val viewModelModule = module {
         AudioPlayerViewModel(
             trackId = params.get(),
             tracksInteractor = get(),
-            audioPlayerInteractor = get()
+            audioPlayerInteractor = get(),
+            favouriteTracksInteractor = get()
         )
     }
 
     viewModel<FavouriteViewModel> {
-        FavouriteViewModel()
+        FavouriteViewModel(favouriteTracksInteractor = get())
     }
 
     viewModel<PlaylistLibraryViewModel> {

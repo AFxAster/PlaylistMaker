@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.domain.api
 
-import com.example.playlistmaker.search.domain.entity.Track
+import com.example.playlistmaker.common.entity.Track
 import kotlinx.coroutines.flow.Flow
 
 interface TracksInteractor {
