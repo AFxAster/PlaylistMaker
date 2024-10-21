@@ -19,6 +19,9 @@ class FavouriteTracksInteractorImpl(
     override fun getFavouriteTracks(): Flow<List<Track>> =
         favouriteTracksRepository.getFavouriteTracks()
 
+    override fun getFlowableFavouriteTracks(): Flow<List<Track>> =
+        favouriteTracksRepository.getFlowableFavouriteTracks()
+
     override fun getIsFavouriteTrackById(id: String): Flow<Boolean> =
         favouriteTracksRepository.getIsFavouriteTrackById(id)
 }

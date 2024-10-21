@@ -7,6 +7,7 @@ import com.example.playlistmaker.library.data.mapper.toTrack
 import com.example.playlistmaker.library.domain.repository.FavouriteTracksRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class FavouriteTracksRepositoryImpl(
     private val database: AppDatabase
@@ -23,6 +24,10 @@ class FavouriteTracksRepositoryImpl(
         val trackList = database.getFavouriteTracksDao().getFavouriteTracks().map { it.toTrack() }
         emit(trackList)
     }
+
+    override fun getFlowableFavouriteTracks(): Flow<List<Track>> =
+        database.getFavouriteTracksDao().getFlowableFavouriteTracks()
+            .map { list -> list.map { it.toTrack() } }
 
     override fun getIsFavouriteTrackById(id: String): Flow<Boolean> = flow {
         val isFavourite = database.getFavouriteTracksDao().getIsFavouriteTrackById(id.toInt())

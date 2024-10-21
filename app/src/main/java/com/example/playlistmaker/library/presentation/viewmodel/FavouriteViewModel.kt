@@ -16,9 +16,13 @@ class FavouriteViewModel(
     private val state: MutableLiveData<FavouriteState> = MutableLiveData()
     fun getState(): LiveData<FavouriteState> = state
 
-    fun refreshData() {
+    init {
+        loadData()
+    }
+
+    private fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            favouriteTracksInteractor.getFavouriteTracks().collect { tracks ->
+            favouriteTracksInteractor.getFlowableFavouriteTracks().collect { tracks ->
                 if (tracks.isNotEmpty()) {
                     state.postValue(FavouriteState.Content(tracks.reversed()))
                 } else {

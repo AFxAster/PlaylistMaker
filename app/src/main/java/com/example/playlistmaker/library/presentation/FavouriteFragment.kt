@@ -63,11 +63,6 @@ class FavouriteFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.refreshData()
-    }
-
     private fun render(state: FavouriteState) {
         when (state) {
             is FavouriteState.Empty -> {

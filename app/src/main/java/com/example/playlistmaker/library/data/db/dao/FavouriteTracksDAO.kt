@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.playlistmaker.library.data.db.entity.FavouriteTrackEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavouriteTracksDAO {
@@ -19,6 +20,9 @@ interface FavouriteTracksDAO {
     @Query("SELECT * FROM favourite_table")
     fun getFavouriteTracks(): List<FavouriteTrackEntity>
 
-    @Query("SELECT 1 FROM favourite_table WHERE trackId = :id")
+    @Query("SELECT * FROM favourite_table")
+    fun getFlowableFavouriteTracks(): Flow<List<FavouriteTrackEntity>>
+
+    @Query("SELECT COUNT(1) FROM favourite_table WHERE trackId = :id")
     fun getIsFavouriteTrackById(id: Int): Boolean
 }
