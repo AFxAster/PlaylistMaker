@@ -1,10 +1,11 @@
-package com.example.playlistmaker.search.presentation
+package com.example.playlistmaker.common.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackListItemBinding
+import com.example.playlistmaker.search.presentation.TrackViewHolder
 import com.example.playlistmaker.search.presentation.model.TrackUI
 
 class TracksAdapter : RecyclerView.Adapter<TrackViewHolder>() {

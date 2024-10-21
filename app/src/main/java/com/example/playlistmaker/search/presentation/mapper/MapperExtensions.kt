@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.presentation.mapper
 
-import com.example.playlistmaker.search.domain.entity.Track
+import com.example.playlistmaker.common.entity.Track
 import com.example.playlistmaker.search.presentation.model.TrackUI
 import java.text.SimpleDateFormat
 import java.util.Locale

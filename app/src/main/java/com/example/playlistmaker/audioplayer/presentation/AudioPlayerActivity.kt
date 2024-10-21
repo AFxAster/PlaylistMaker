@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
+import com.example.playlistmaker.audioplayer.presentation.mapper.toPlayerTrackUI
 import com.example.playlistmaker.audioplayer.presentation.model.PlayerTrackUI
 import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
@@ -43,6 +44,12 @@ class AudioPlayerActivity : AppCompatActivity() {
                 viewModel.play()
         }
 
+        binding.addToFavouriteButton.setOnClickListener {
+            viewModel.changeFavourite()
+        }
+
+        viewModel.getIsFavourite().observe(this, ::renderFavouriteButton)
+
         viewModel.getState().observe(this, ::render)
 
         viewModel.getPlayingStatus().observe(this, ::renderPlayingStatus)
@@ -59,7 +66,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
 
             is AudioPlayerState.Content -> {
-                showContent(state.data)
+                showContent(state.data.toPlayerTrackUI())
             }
         }
     }
@@ -81,6 +88,13 @@ class AudioPlayerActivity : AppCompatActivity() {
                 binding.playProgress.text = "0:00"
             }
         }
+    }
+
+    private fun renderFavouriteButton(isFavourite: Boolean) {
+        if (isFavourite)
+            binding.addToFavouriteButton.setImageResource(R.drawable.ic_favourite)
+        else
+            binding.addToFavouriteButton.setImageResource(R.drawable.ic_outlined_favourite)
     }
 
     private fun showContent(trackUI: PlayerTrackUI) {

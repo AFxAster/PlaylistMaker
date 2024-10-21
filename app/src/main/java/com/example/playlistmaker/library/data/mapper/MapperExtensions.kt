@@ -1,31 +1,10 @@
-package com.example.playlistmaker.search.data.mapper
+package com.example.playlistmaker.library.data.mapper
 
 import com.example.playlistmaker.common.entity.Track
-import com.example.playlistmaker.search.data.dto.HistoryTrackDTO
-import com.example.playlistmaker.search.data.dto.TrackDTO
+import com.example.playlistmaker.library.data.db.entity.FavouriteTrackEntity
 
-fun TrackDTO.toTrack(): Track {
-    return Track(
-        trackId = trackId,
-        trackName = trackName,
-        artistName = artistName,
-        trackTimeMillis = trackTimeMillis,
-        artworkUrl100 = artworkUrl100,
-        releaseDate = releaseDate,
-        primaryGenreName = primaryGenreName,
-        country = country,
-        previewUrl = previewUrl,
-        collectionName = collectionName.run {
-            if (endsWith(" - Single"))
-                null
-            else
-                this
-        }
-    )
-}
-
-fun HistoryTrackDTO.toTrack(): Track {
-    return Track(
+fun Track.toFavouriteTrackEntity(): FavouriteTrackEntity {
+    return FavouriteTrackEntity(
         trackId = trackId,
         trackName = trackName,
         artistName = artistName,
@@ -40,8 +19,8 @@ fun HistoryTrackDTO.toTrack(): Track {
     )
 }
 
-fun Track.toHistoryTrackDTO(): HistoryTrackDTO {
-    return HistoryTrackDTO(
+fun FavouriteTrackEntity.toTrack(): Track {
+    return Track(
         trackId = trackId,
         trackName = trackName,
         artistName = artistName,

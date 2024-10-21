@@ -1,8 +1,8 @@
-package com.example.playlistmaker.search.data.dto
+package com.example.playlistmaker.common.entity
 
 import java.util.Date
 
-data class HistoryTrackDTO(
+data class Track(
     val trackId: String,
     val trackName: String,
     val artistName: String,
@@ -13,5 +13,5 @@ data class HistoryTrackDTO(
     val country: String,
     val previewUrl: String,
     val collectionName: String?,
-    val isFavourite: Boolean
+    var isFavourite: Boolean = false
 )
