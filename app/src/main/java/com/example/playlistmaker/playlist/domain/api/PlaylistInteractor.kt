@@ -5,12 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistInteractor {
     fun insertPlaylist(playlist: Playlist): Long
-
+    fun updatePlaylist(playlist: Playlist)
     fun deletePlaylist(playlist: Playlist)
-
     fun getPlaylists(): Flow<List<Playlist>>
-
     fun getFlowablePlaylists(): Flow<List<Playlist>>
-
-    fun getPlaylistById(id: Int): Flow<Playlist>
+    fun getPlaylistById(id: Long): Flow<Playlist>
 }

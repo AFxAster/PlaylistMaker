@@ -17,12 +17,17 @@ class NewPlaylistViewModel(
     fun addPlaylist(playlist: Playlist) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = playlistInteractor.insertPlaylist(playlist)
-//        saveImage(playlist.artworkPath, id.toString())
-            Log.d("my", "$id")
+            playlist.artworkPath?.let { path ->
+                imageInteractor.saveImage(path, id.toString())
+                playlistInteractor.updatePlaylist(
+                    playlist.copy(
+                        id = id,
+                        artworkPath = imageInteractor.getImagePathById(
+                            id.toString()
+                        ).also { Log.d("my", it) }
+                    )
+                )
+            }
         }
-    }
-
-    private fun saveImage(path: String, id: String) {
-        imageInteractor.saveImage(path, id)
     }
 }

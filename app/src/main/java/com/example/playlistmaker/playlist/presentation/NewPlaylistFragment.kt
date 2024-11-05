@@ -82,16 +82,15 @@ class NewPlaylistFragment : Fragment() {
                 }
             }
             createButton.setOnClickListener {
-                viewModel.addPlaylist(
-                    Playlist(
-                        0,
-                        nameEditText.text.toString(),
-                        descriptionEditText.text.toString(),
-                        lastUri?.toString(),
-                        emptyList(),
-                        0
-                    )
+                val playlist = Playlist(
+                    0,
+                    nameEditText.text.toString().trim(),
+                    descriptionEditText.text.toString(),
+                    lastUri?.toString(),
+                    emptyList(),
+                    0
                 )
+                viewModel.addPlaylist(playlist)
 
                 showToast()
                 findNavController().navigateUp()

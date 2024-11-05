@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistLibraryBinding
+import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistItemUI
+import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
 import com.example.playlistmaker.playlist.presentation.state.PlaylistLibraryState
 import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistLibraryViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,6 +19,7 @@ class PlaylistLibraryFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistLibraryBinding
     private val viewModel: PlaylistLibraryViewModel by viewModel()
+    private val playlistsAdapter = PlaylistsAdapter() // todo onClick
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +40,13 @@ class PlaylistLibraryFragment : Fragment() {
             render(state)
         }
 
-        binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
+        with(binding) {
+            newPlaylistButton.setOnClickListener {
+                findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
+            }
+            playlistsRecyclerView.adapter = playlistsAdapter
+
+
         }
     }
 
@@ -48,12 +56,23 @@ class PlaylistLibraryFragment : Fragment() {
                 showEmpty()
             }
 
-            is PlaylistLibraryState.Content -> {}
+            is PlaylistLibraryState.Content -> {
+                showContent(state.playlists.map { it.toPlaylistItemUI() })
+            }
         }
+    }
+
+    private fun showContent(playlists: List<PlaylistItemUI>) {
+        playlistsAdapter.playlists = playlists
+        binding.playlistsRecyclerView.isVisible = true
+
+        binding.emptyViewStub.isVisible = false
     }
 
     private fun showEmpty() {
         binding.emptyViewStub.isVisible = true
+
+        binding.playlistsRecyclerView.isVisible = false
     }
 
     companion object {

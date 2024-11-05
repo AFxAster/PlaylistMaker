@@ -16,6 +16,9 @@ class PlaylistRepositoryImpl(
     override fun insertPlaylist(playlist: Playlist): Long =
         database.getPlaylistDao().insertPlaylist(playlist.toPlaylistEntity())
 
+    override fun updatePlaylist(playlist: Playlist) {
+        database.getPlaylistDao().updatePlaylist(playlist.toPlaylistEntity())
+    }
 
     override fun deletePlaylist(playlist: Playlist) {
         database.getPlaylistDao().deletePlaylist(playlist.toPlaylistEntity())
@@ -29,7 +32,7 @@ class PlaylistRepositoryImpl(
     override fun getFlowablePlaylists(): Flow<List<Playlist>> =
         database.getPlaylistDao().getFlowablePlaylists().map { it.map { it.toPlaylist() } }
 
-    override fun getPlaylistById(id: Int): Flow<Playlist> = flow {
+    override fun getPlaylistById(id: Long): Flow<Playlist> = flow {
         val playlist = database.getPlaylistDao().getPlaylistById(id).toPlaylist()
         emit(playlist)
     }

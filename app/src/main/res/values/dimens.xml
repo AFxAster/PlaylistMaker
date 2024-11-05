@@ -24,4 +24,6 @@
 
     <dimen name="new_playlist_artwork_size">312dp</dimen>
     <dimen name="input_layout_height">56dp</dimen>
+
+    <dimen name="playlist_item_artwork_size">160dp</dimen>
 </resources>

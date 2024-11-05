@@ -90,4 +90,14 @@
     <style name="ArtworkRoundedCorners.NewPlaylist">
         <item name="cornerSize">8dp</item>
     </style>
+
+    <style name="ArtworkRoundedCorners.PlaylistItem">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="PlaylistItemInfo">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

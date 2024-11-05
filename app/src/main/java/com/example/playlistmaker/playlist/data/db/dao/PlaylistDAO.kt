@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +14,9 @@ interface PlaylistDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPlaylist(playlist: PlaylistEntity): Long
+
+    @Update
+    fun updatePlaylist(playlist: PlaylistEntity)
 
     @Delete
     fun deletePlaylist(playlist: PlaylistEntity)
@@ -24,5 +28,5 @@ interface PlaylistDAO {
     fun getFlowablePlaylists(): Flow<List<PlaylistEntity>>
 
     @Query("SELECT * FROM playlist_table WHERE id = :arg0")
-    fun getPlaylistById(arg0: Int): PlaylistEntity
+    fun getPlaylistById(arg0: Long): PlaylistEntity
 }
