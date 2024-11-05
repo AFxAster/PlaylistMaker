@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data.repository
 
+import com.example.playlistmaker.common.data.db.AppDatabase
 import com.example.playlistmaker.common.entity.Track
-import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.search.data.TracksNetworkClient
 import com.example.playlistmaker.search.data.dto.GetTrackByIdRequest
 import com.example.playlistmaker.search.data.dto.GetTracksRequest

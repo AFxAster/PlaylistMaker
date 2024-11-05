@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.room.Room
-import com.example.playlistmaker.library.data.db.AppDatabase
+import com.example.playlistmaker.common.data.db.AppDatabase
 import com.example.playlistmaker.search.data.TracksNetworkClient
 import com.example.playlistmaker.search.data.network.ITunesApi
 import com.example.playlistmaker.search.data.network.TrackRetrofitTracksNetworkClient

@@ -82,4 +82,12 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="NewPlaylistHintAppearance">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ArtworkRoundedCorners.NewPlaylist">
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>
