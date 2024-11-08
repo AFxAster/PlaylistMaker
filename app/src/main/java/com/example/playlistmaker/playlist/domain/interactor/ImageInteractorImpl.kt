@@ -6,10 +6,10 @@ import com.example.playlistmaker.playlist.domain.repository.ImageRepository
 class ImageInteractorImpl(
     private val imageRepository: ImageRepository
 ) : ImageInteractor {
-    override fun saveImage(pathFrom: String, id: String) {
+    override fun saveImage(pathFrom: String, id: Long) {
         imageRepository.saveImage(pathFrom, id)
     }
 
-    override fun getImagePathById(id: String): String =
+    override fun getImagePathById(id: Long): String =
         imageRepository.getImagePathById(id)
 }

@@ -1,6 +1,5 @@
-package com.example.playlistmaker.playlist.presentation.viewmodel
+package com.example.playlistmaker.newplaylist.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.playlist.domain.api.ImageInteractor
@@ -16,15 +15,13 @@ class NewPlaylistViewModel(
 
     fun addPlaylist(playlist: Playlist) {
         viewModelScope.launch(Dispatchers.IO) {
-            val id = playlistInteractor.insertPlaylist(playlist)
+            val playlistId = playlistInteractor.insertPlaylist(playlist)
             playlist.artworkPath?.let { path ->
-                imageInteractor.saveImage(path, id.toString())
+                imageInteractor.saveImage(path, playlistId)
                 playlistInteractor.updatePlaylist(
                     playlist.copy(
-                        id = id,
-                        artworkPath = imageInteractor.getImagePathById(
-                            id.toString()
-                        ).also { Log.d("my", it) }
+                        id = playlistId,
+                        artworkPath = imageInteractor.getImagePathById(playlistId)
                     )
                 )
             }

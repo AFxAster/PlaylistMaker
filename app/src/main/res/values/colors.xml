@@ -17,4 +17,6 @@
     <color name="theme_switcher_track">@color/YP_light_gray</color>
 
     <color name="audio_player_additional_button">@color/YP_black_transparent_25</color>
+
+    <color name="bottom_sheet_stick">@color/YP_light_gray</color>
 </resources>

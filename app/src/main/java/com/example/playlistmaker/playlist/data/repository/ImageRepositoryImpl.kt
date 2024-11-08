@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import com.example.playlistmaker.playlist.domain.repository.ImageRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -13,14 +12,13 @@ import java.io.FileOutputStream
 class ImageRepositoryImpl(
     private val context: Context
 ) : ImageRepository {
-    override fun saveImage(pathFrom: String, id: String) {
+    override fun saveImage(pathFrom: String, id: Long) {
         val filePath =
             File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_artwork")
-        Log.d("my", "${context.filesDir.path}")
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, "artwork_${id}.jpg")
+        val file = File(filePath, "artwork_$id.jpg")
         val inputStream = context.contentResolver.openInputStream(Uri.parse(pathFrom))
         val outputStream = FileOutputStream(file)
         BitmapFactory
@@ -30,13 +28,13 @@ class ImageRepositoryImpl(
         outputStream.close()
     }
 
-    override fun getImagePathById(id: String): String {
+    override fun getImagePathById(id: Long): String {
         val filePath =
             File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_artwork")
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, "artwork_${id}.jpg")
+        val file = File(filePath, "artwork_$id.jpg")
         return file.path
     }
 }

@@ -7,10 +7,15 @@ import com.example.playlistmaker.common.data.db.convertor.Converters
 import com.example.playlistmaker.favourite.data.db.dao.FavouriteTracksDAO
 import com.example.playlistmaker.favourite.data.db.entity.FavouriteTrackEntity
 import com.example.playlistmaker.playlist.data.db.dao.PlaylistDAO
+import com.example.playlistmaker.playlist.data.db.dao.TrackDao
 import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.playlist.data.db.entity.TrackEntity
 
 
-@Database(version = 1, entities = [FavouriteTrackEntity::class, PlaylistEntity::class])
+@Database(
+    version = 1,
+    entities = [FavouriteTrackEntity::class, PlaylistEntity::class, TrackEntity::class]
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -18,4 +23,5 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getPlaylistDao(): PlaylistDAO
 
+    abstract fun getTrackDao(): TrackDao
 }

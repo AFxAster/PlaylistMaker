@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="61dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="13dp"
+    android:paddingVertical="8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/artwork"
+        android:layout_width="@dimen/playlist_linear_item_artwork_size"
+        android:layout_height="@dimen/playlist_linear_item_artwork_size"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/ArtworkRoundedCorners"
+        tools:src="@drawable/ic_placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/PlaylistItemInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textSize="16sp"
+            tools:text="LOVESONGS" />
+
+        <TextView
+            android:id="@+id/tracksNumber"
+            style="@style/PlaylistItemInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textSize="11sp"
+            tools:text="18 треков" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,8 +1,10 @@
 package com.example.playlistmaker.playlist.data.repository
 
 import com.example.playlistmaker.common.data.db.AppDatabase
+import com.example.playlistmaker.common.entity.Track
 import com.example.playlistmaker.playlist.data.mapper.toPlaylist
 import com.example.playlistmaker.playlist.data.mapper.toPlaylistEntity
+import com.example.playlistmaker.playlist.data.mapper.toTrackEntity
 import com.example.playlistmaker.playlist.domain.entity.Playlist
 import com.example.playlistmaker.playlist.domain.repository.PlaylistRepository
 import kotlinx.coroutines.flow.Flow
@@ -35,5 +37,18 @@ class PlaylistRepositoryImpl(
     override fun getPlaylistById(id: Long): Flow<Playlist> = flow {
         val playlist = database.getPlaylistDao().getPlaylistById(id).toPlaylist()
         emit(playlist)
+    }
+
+    override fun addTrackToPlaylist(track: Track, playlistId: Long) {
+        database.getTrackDao().insertTrack(track.toTrackEntity())
+        with(database.getPlaylistDao()) {
+            val playlist = getPlaylistById(playlistId)
+            updatePlaylist(
+                playlist.copy(
+                    trackIds = playlist.trackIds.toMutableList().apply {
+                        add(track.trackId)
+                    }
+                ))
+        }
     }
 }

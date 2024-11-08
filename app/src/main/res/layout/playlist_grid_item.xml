@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="160dp"
     android:layout_height="196dp"
-    android:layout_marginHorizontal="0dp"
+    android:layout_marginHorizontal="4dp"
     android:layout_marginVertical="8dp"
     android:orientation="vertical">
-    <!--todo короче ты понял че надо тут-->
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/artwork"
         android:layout_width="@dimen/playlist_item_artwork_size"

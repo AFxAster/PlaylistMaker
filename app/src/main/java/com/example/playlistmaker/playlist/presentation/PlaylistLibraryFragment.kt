@@ -8,6 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
+import com.example.playlistmaker.common.presentation.PlaylistsAdapter
+import com.example.playlistmaker.common.presentation.state.PlaylistsViewState
 import com.example.playlistmaker.databinding.FragmentPlaylistLibraryBinding
 import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistItemUI
 import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
@@ -19,7 +21,7 @@ class PlaylistLibraryFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistLibraryBinding
     private val viewModel: PlaylistLibraryViewModel by viewModel()
-    private val playlistsAdapter = PlaylistsAdapter() // todo onClick
+    private val playlistsAdapter = PlaylistsAdapter(PlaylistsViewState.Grid)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,6 @@ class PlaylistLibraryFragment : Fragment() {
                 findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
             }
             playlistsRecyclerView.adapter = playlistsAdapter
-
-
         }
     }
 

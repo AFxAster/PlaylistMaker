@@ -5,6 +5,8 @@ data class Playlist(
     val name: String,
     val description: String,
     val artworkPath: String?,
-    val trackIds: List<String>,
+    val trackIds: List<String>
+) {
     val tracksNumber: Int
-)
+        get() = trackIds.size
+}

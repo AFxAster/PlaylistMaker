@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.audioplayer.presentation.AudioPlayerActivity
 import com.example.playlistmaker.common.presentation.TracksAdapter
-import com.example.playlistmaker.common.utils.debounce
+import com.example.playlistmaker.common.utils.debounceWithFirstCall
 import com.example.playlistmaker.databinding.FragmentFavouriteBinding
 import com.example.playlistmaker.favourite.presentation.state.FavouriteState
 import com.example.playlistmaker.favourite.presentation.viewmodel.FavouriteViewModel
@@ -26,10 +26,9 @@ class FavouriteFragment : Fragment() {
     private val tracksAdapter = TracksAdapter()
     private val viewModel: FavouriteViewModel by viewModel()
 
-    private val debounceClick = debounce<String>(
+    private val debounceClick = debounceWithFirstCall<String>(
         delayMillis = CLICK_DEBOUNCE_DELAY,
         coroutineScope = lifecycleScope,
-        useLastCall = false,
         action = ::onTrackClick
     )
 

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.domain.interactor
 
+import com.example.playlistmaker.common.entity.Track
 import com.example.playlistmaker.playlist.domain.api.PlaylistInteractor
 import com.example.playlistmaker.playlist.domain.entity.Playlist
 import com.example.playlistmaker.playlist.domain.repository.PlaylistRepository
@@ -28,4 +29,8 @@ class PlaylistInteractorImpl(
 
     override fun getPlaylistById(id: Long): Flow<Playlist> =
         playlistRepository.getPlaylistById(id)
+
+    override fun addTrackToPlaylist(track: Track, playlistId: Long) {
+        playlistRepository.addTrackToPlaylist(track, playlistId)
+    }
 }

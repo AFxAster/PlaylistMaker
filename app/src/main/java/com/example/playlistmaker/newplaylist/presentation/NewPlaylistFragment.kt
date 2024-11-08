@@ -1,4 +1,4 @@
-package com.example.playlistmaker.playlist.presentation
+package com.example.playlistmaker.newplaylist.presentation
 
 import android.Manifest
 import android.net.Uri
@@ -16,23 +16,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.newplaylist.presentation.viewmodel.NewPlaylistViewModel
 import com.example.playlistmaker.playlist.domain.entity.Playlist
-import com.example.playlistmaker.playlist.presentation.viewmodel.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment() {
+class NewPlaylistFragment :
+    Fragment() {
     private lateinit var binding: FragmentNewPlaylistBinding
     private val requester = PermissionRequester.instance()
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                binding.artwork.setImageURI(uri)
-                lastUri = uri
-            }
+            setUri(uri)
         }
     private val exitDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
@@ -40,7 +38,7 @@ class NewPlaylistFragment : Fragment() {
             .setMessage(R.string.lost_data_warning)
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .setPositiveButton(R.string.quit) { _, _ ->
-                findNavController().navigateUp()
+                back()
             }.create()
     }
     private var lastUri: Uri? = null
@@ -87,13 +85,12 @@ class NewPlaylistFragment : Fragment() {
                     nameEditText.text.toString().trim(),
                     descriptionEditText.text.toString(),
                     lastUri?.toString(),
-                    emptyList(),
-                    0
+                    emptyList()
                 )
                 viewModel.addPlaylist(playlist)
 
                 showToast()
-                findNavController().navigateUp()
+                back()
             }
         }
 
@@ -101,7 +98,6 @@ class NewPlaylistFragment : Fragment() {
             onBack()
         }
     }
-
 
     private fun showToast() {
         Toast.makeText(
@@ -115,10 +111,25 @@ class NewPlaylistFragment : Fragment() {
         if (lastUri != null ||
             binding.nameEditText.text?.isNotBlank() == true ||
             binding.descriptionEditText.text?.isNotBlank() == true
-        )
+        ) {
             exitDialog.show()
-        else {
+        } else {
+            back()
+        }
+    }
+
+    private fun back() {
+        try {
             findNavController().navigateUp()
+        } catch (e: IllegalStateException) {
+            parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun setUri(uri: Uri?) {
+        if (uri != null) {
+            binding.artwork.setImageURI(uri)
+            lastUri = uri
         }
     }
 }
