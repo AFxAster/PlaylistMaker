@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.common.utils.debounce
+import com.example.playlistmaker.common.utils.debounceWithLastCall
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.presentation.mapper.toTrackUI
@@ -20,10 +20,9 @@ class SearchViewModel(
     var lastQuery: String = ""
         private set
 
-    private val debounceRequestLambda = debounce<String>(
+    private val debounceRequestLambda = debounceWithLastCall<String>(
         delayMillis = REQUEST_DELAY,
         coroutineScope = viewModelScope,
-        useLastCall = true,
         action = ::request
     )
 

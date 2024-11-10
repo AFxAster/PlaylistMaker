@@ -10,7 +10,7 @@ import com.example.playlistmaker.audioplayer.presentation.mapper.toFormattedPosi
 import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
 import com.example.playlistmaker.common.entity.Track
-import com.example.playlistmaker.library.domain.api.FavouriteTracksInteractor
+import com.example.playlistmaker.favourite.domain.api.FavouriteTracksInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

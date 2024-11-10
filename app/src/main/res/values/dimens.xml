@@ -12,13 +12,20 @@
     <dimen name="margin_top_icon_settings">19dp</dimen>
     <dimen name="margin_end_icon_settings">12dp</dimen>
     <dimen name="margin_bottom_icon_settings">18dp</dimen>
-    
+
     <dimen name="track_list_item_artwork_size">45dp</dimen>
-    
+
     <dimen name="audio_player_artwork_size">312dp</dimen>
     <dimen name="audio_player_subinfo_sections_space">17dp</dimen>
     <dimen name="audio_player_play_button_size">84dp</dimen>
     <dimen name="audio_player_additional_button_size">51dp</dimen>
 
     <dimen name="search_progress_bar">44dp</dimen>
+
+    <dimen name="new_playlist_artwork_size">312dp</dimen>
+    <dimen name="input_layout_height">56dp</dimen>
+
+    <dimen name="playlist_item_artwork_size">160dp</dimen>
+
+    <dimen name="playlist_linear_item_artwork_size">45dp</dimen>
 </resources>

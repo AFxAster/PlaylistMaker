@@ -13,13 +13,15 @@ import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
 import com.example.playlistmaker.audioplayer.presentation.viewmodel.AudioPlayerViewModel
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.example.playlistmaker.playlistsbottomsheet.presentation.PlaylistsBottomSheetFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
+
+    private val trackId by lazy { intent.getStringExtra(TRACK_ID_KEY) ?: "" }
     private val viewModel: AudioPlayerViewModel by viewModel {
-        val trackId = intent.getStringExtra(TRACK_ID_KEY) ?: ""
         parametersOf(trackId)
     }
 
@@ -28,24 +30,38 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        with(binding) {
+            toolbar.setNavigationOnClickListener {
+                finish()
+            }
 
-        binding.noInternetStub.setOnInflateListener { _, view ->
-            val refreshButton: Button = view.findViewById(R.id.refresh_button)
-            refreshButton.setOnClickListener { viewModel.refresh() }
-        }
+            noInternetStub.setOnInflateListener { _, view ->
+                val refreshButton: Button = view.findViewById(R.id.refresh_button)
+                refreshButton.setOnClickListener { viewModel.refresh() }
+            }
 
-        binding.playButton.setOnClickListener {
-            if (viewModel.getPlayingStatus().value is PlayingStatus.Playing)
-                viewModel.pause()
-            else
-                viewModel.play()
-        }
+            playButton.setOnClickListener {
+                if (viewModel.getPlayingStatus().value is PlayingStatus.Playing)
+                    viewModel.pause()
+                else
+                    viewModel.play()
+            }
 
-        binding.addToFavouriteButton.setOnClickListener {
-            viewModel.changeFavourite()
+            addToFavouriteButton.setOnClickListener {
+                viewModel.changeFavourite()
+            }
+
+            addToPlaylistButton.setOnClickListener {
+                val playlistsBottomSheetFragment = PlaylistsBottomSheetFragment().apply {
+                    arguments = PlaylistsBottomSheetFragment.createBundleOf(trackId)
+                }
+
+                playlistsBottomSheetFragment.show(
+                    supportFragmentManager,
+                    playlistsBottomSheetFragment.tag
+                )
+            }
+
         }
 
         viewModel.getIsFavourite().observe(this, ::renderFavouriteButton)
