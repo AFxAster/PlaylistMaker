@@ -24,8 +24,7 @@ import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment :
-    Fragment() {
+class NewPlaylistFragment : Fragment() {
     private lateinit var binding: FragmentNewPlaylistBinding
     private val requester = PermissionRequester.instance()
     private val pickMedia =
