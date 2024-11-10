@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.playlist.domain.api.PlaylistInteractor
-import com.example.playlistmaker.playlist.domain.entity.Playlist
+import com.example.playlistmaker.playlistLibrary.domain.api.PlaylistInteractor
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import com.example.playlistmaker.playlistsbottomsheet.presentation.state.AddingStatus
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import kotlinx.coroutines.Dispatchers

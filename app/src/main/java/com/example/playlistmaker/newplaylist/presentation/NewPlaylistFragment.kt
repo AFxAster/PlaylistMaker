@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.newplaylist.presentation.viewmodel.NewPlaylistViewModel
-import com.example.playlistmaker.playlist.domain.entity.Playlist
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult

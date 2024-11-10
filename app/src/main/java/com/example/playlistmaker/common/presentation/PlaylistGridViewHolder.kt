@@ -3,7 +3,7 @@ package com.example.playlistmaker.common.presentation
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.PlaylistGridItemBinding
-import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
+import com.example.playlistmaker.playlistLibrary.presentation.model.PlaylistItemUI
 
 class PlaylistGridViewHolder(private val binding: PlaylistGridItemBinding) :
     PlaylistViewHolder(binding.root) {

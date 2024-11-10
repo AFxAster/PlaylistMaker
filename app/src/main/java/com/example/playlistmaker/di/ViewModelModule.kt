@@ -3,7 +3,7 @@ package com.example.playlistmaker.di
 import com.example.playlistmaker.audioplayer.presentation.viewmodel.AudioPlayerViewModel
 import com.example.playlistmaker.favourite.presentation.viewmodel.FavouriteViewModel
 import com.example.playlistmaker.newplaylist.presentation.viewmodel.NewPlaylistViewModel
-import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistLibraryViewModel
+import com.example.playlistmaker.playlistLibrary.presentation.viewmodel.PlaylistLibraryViewModel
 import com.example.playlistmaker.playlistsbottomsheet.presentation.viewmodel.PlaylistsBottomSheetViewModel
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
 import com.example.playlistmaker.settings.presentation.viewmodel.SettingsViewModel

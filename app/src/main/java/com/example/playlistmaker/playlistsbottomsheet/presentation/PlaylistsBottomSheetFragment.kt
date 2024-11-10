@@ -16,7 +16,7 @@ import com.example.playlistmaker.common.presentation.state.PlaylistsViewState
 import com.example.playlistmaker.common.utils.debounceWithFirstCall
 import com.example.playlistmaker.databinding.FragmentPlaylistsBottomSheetBinding
 import com.example.playlistmaker.newplaylist.presentation.NewPlaylistFragment
-import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistItemUI
+import com.example.playlistmaker.playlistLibrary.presentation.mapper.toPlaylistItemUI
 import com.example.playlistmaker.playlistsbottomsheet.presentation.state.AddingStatus
 import com.example.playlistmaker.playlistsbottomsheet.presentation.viewmodel.PlaylistsBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
