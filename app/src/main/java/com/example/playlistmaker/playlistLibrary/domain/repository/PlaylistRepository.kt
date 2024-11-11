@@ -12,4 +12,6 @@ interface PlaylistRepository {
     fun getFlowablePlaylists(): Flow<List<Playlist>>
     fun getPlaylistById(id: Long): Flow<Playlist>
     fun addTrackToPlaylist(track: Track, playlistId: Long)
+    fun deleteTrackFromPlaylist(trackId: String, playlistId: Long)
+    fun getTracksToPlaylist(playlistId: Long): Flow<List<Track>>
 }

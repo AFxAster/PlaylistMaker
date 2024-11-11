@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/playlists_bottom_sheet</item>
+        <item name="android:background">@drawable/bottom_sheet</item>
         <item name="behavior_peekHeight">500dp</item>
     </style>
 </resources>

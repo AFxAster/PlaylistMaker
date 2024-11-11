@@ -52,8 +52,7 @@ val viewModelModule = module {
     viewModel<PlaylistViewModel> { params ->
         PlaylistViewModel(
             id = params.get(),
-            playlistInteractor = get(),
-            trackInteractor = get()
+            playlistInteractor = get()
         )
     }
 }

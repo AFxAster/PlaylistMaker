@@ -40,3 +40,19 @@ fun Track.toTrackEntity(): TrackEntity {
         isFavourite = isFavourite
     )
 }
+
+fun TrackEntity.toTrack(): Track {
+    return Track(
+        trackId = trackId,
+        trackName = trackName,
+        artistName = artistName,
+        trackTimeMillis = trackTimeMillis,
+        artworkUrl100 = artworkUrl100,
+        releaseDate = releaseDate,
+        primaryGenreName = primaryGenreName,
+        country = country,
+        previewUrl = previewUrl,
+        collectionName = collectionName,
+        isFavourite = isFavourite
+    )
+}

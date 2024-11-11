@@ -9,8 +9,11 @@ import com.example.playlistmaker.playlistLibrary.data.db.entity.TrackEntity
 @Dao
 interface TrackDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTrack(track: TrackEntity)
+
+    @Query("delete from track_table where trackId = :arg0")
+    fun deleteTrack(arg0: String)
 
     @Query("SELECT * FROM track_table WHERE trackId = :arg0")
     fun getTrackById(arg0: String): TrackEntity

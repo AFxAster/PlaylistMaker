@@ -57,5 +57,9 @@
         android:id="@+id/playlistFragment"
         android:name="com.example.playlistmaker.playlist.presentation.PlaylistFragment"
         android:label="fragment_playlist"
-        tools:layout="@layout/fragment_playlist" />
+        tools:layout="@layout/fragment_playlist">
+        <action
+            android:id="@+id/action_playlistFragment_to_audioPlayerActivity"
+            app:destination="@id/audioPlayerActivity" />
+    </fragment>
 </navigation>
