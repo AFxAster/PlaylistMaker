@@ -82,7 +82,9 @@ class NewPlaylistFragment : Fragment() {
                 val playlist = Playlist(
                     0,
                     nameEditText.text.toString().trim(),
-                    descriptionEditText.text.toString(),
+                    descriptionEditText.text!!.let {
+                        if (it.isNotBlank()) it.toString().trim() else ""
+                    },
                     lastUri?.toString(),
                     emptyList()
                 )

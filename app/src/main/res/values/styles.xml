@@ -100,4 +100,11 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="PlaylistInfo">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/YP_black</item>
+    </style>
 </resources>

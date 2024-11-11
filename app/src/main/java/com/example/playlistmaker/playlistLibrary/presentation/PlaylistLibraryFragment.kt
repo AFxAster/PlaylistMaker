@@ -8,9 +8,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
+import com.example.playlistmaker.common.presentation.PlaylistViewHolder
 import com.example.playlistmaker.common.presentation.PlaylistsAdapter
 import com.example.playlistmaker.common.presentation.state.PlaylistsViewState
 import com.example.playlistmaker.databinding.FragmentPlaylistLibraryBinding
+import com.example.playlistmaker.playlist.presentation.PlaylistFragment
 import com.example.playlistmaker.playlistLibrary.presentation.mapper.toPlaylistItemUI
 import com.example.playlistmaker.playlistLibrary.presentation.model.PlaylistItemUI
 import com.example.playlistmaker.playlistLibrary.presentation.state.PlaylistLibraryState
@@ -41,6 +43,13 @@ class PlaylistLibraryFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             render(state)
         }
+        playlistsAdapter.onPlaylistClickListener =
+            PlaylistViewHolder.OnPlaylistClickListener { id ->
+                findNavController().navigate(
+                    R.id.action_libraryFragment_to_playlistFragment,
+                    PlaylistFragment.createBundle(id)
+                )
+            }
 
         with(binding) {
             newPlaylistButton.setOnClickListener {
