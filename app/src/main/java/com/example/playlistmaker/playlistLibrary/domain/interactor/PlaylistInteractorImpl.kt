@@ -16,8 +16,8 @@ class PlaylistInteractorImpl(
         playlistRepository.updatePlaylist(playlist)
     }
 
-    override fun deletePlaylist(playlist: Playlist) {
-        playlistRepository.deletePlaylist(playlist)
+    override fun deletePlaylist(id: Long) {
+        playlistRepository.deletePlaylist(id)
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> =
@@ -28,6 +28,9 @@ class PlaylistInteractorImpl(
 
     override fun getPlaylistById(id: Long): Flow<Playlist> =
         playlistRepository.getPlaylistById(id)
+
+    override fun getFlowablePlaylistById(id: Long): Flow<Playlist?> =
+        playlistRepository.getFlowablePlaylistById(id)
 
     override fun addTrackToPlaylist(track: Track, playlistId: Long) {
         playlistRepository.addTrackToPlaylist(track, playlistId)

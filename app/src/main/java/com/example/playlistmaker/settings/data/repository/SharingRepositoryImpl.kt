@@ -16,10 +16,10 @@ class SharingRepositoryImpl(
         context.startActivity(intent)
     }
 
-    override fun shareLink(link: String) {
+    override fun shareText(text: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, link)
+        intent.putExtra(Intent.EXTRA_TEXT, text)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
@@ -34,4 +34,5 @@ class SharingRepositoryImpl(
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
+
 }

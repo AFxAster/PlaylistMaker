@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.audioplayer.domain.api.AudioPlayerInteractor
 import com.example.playlistmaker.audioplayer.domain.api.StatusObserver
-import com.example.playlistmaker.audioplayer.presentation.mapper.toFormattedPosition
 import com.example.playlistmaker.audioplayer.presentation.state.AudioPlayerState
 import com.example.playlistmaker.audioplayer.presentation.state.PlayingStatus
 import com.example.playlistmaker.common.entity.Track
+import com.example.playlistmaker.common.utils.toFormattedTime
 import com.example.playlistmaker.favourite.domain.api.FavouriteTracksInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import kotlinx.coroutines.Dispatchers
@@ -76,7 +76,7 @@ class AudioPlayerViewModel(
                 timerJob = viewModelScope.launch {
                     do {
                         playingStatus.value = PlayingStatus.Playing(
-                            audioPlayerInteractor.getCurrentPosition().toFormattedPosition()
+                            audioPlayerInteractor.getCurrentPosition().toFormattedTime()
                         )
                         delay(REFRESH_PLAY_PROGRESS_DELAY)
                     } while (playingStatus.value is PlayingStatus.Playing)
@@ -84,7 +84,7 @@ class AudioPlayerViewModel(
             }
 
             override fun onPause(position: Int) {
-                playingStatus.value = PlayingStatus.Paused(position.toFormattedPosition())
+                playingStatus.value = PlayingStatus.Paused(position.toFormattedTime())
                 timerJob?.cancel()
             }
 

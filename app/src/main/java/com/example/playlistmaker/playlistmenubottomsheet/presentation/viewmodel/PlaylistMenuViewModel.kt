@@ -1,4 +1,4 @@
-package com.example.playlistmaker.playlist.presentation.viewmodel
+package com.example.playlistmaker.playlistmenubottomsheet.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,16 +11,17 @@ import com.example.playlistmaker.settings.domain.api.SharingInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(
+class PlaylistMenuViewModel(
     private val id: Long,
     private val playlistInteractor: PlaylistInteractor,
     private val sharingInteractor: SharingInteractor
 ) : ViewModel() {
 
     private val state: MutableLiveData<PlaylistState> = MutableLiveData()
-    private val tracks: MutableLiveData<List<Track>> = MutableLiveData()
+    var tracks: List<Track> = emptyList()
+        private set
+
     fun getState(): LiveData<PlaylistState> = state
-    fun getTracks(): LiveData<List<Track>> = tracks
 
     init {
         loadData()
@@ -35,15 +36,14 @@ class PlaylistViewModel(
         }
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.getTracksToPlaylist(id).collect { trackList ->
-                tracks.postValue(trackList)
+                tracks = trackList
             }
         }
     }
 
-    fun deleteTrack(trackId: String) {
-        tracks.value = tracks.value!!.toMutableList().apply { removeIf { it.trackId == trackId } }
+    fun deleteThisPlaylist() {
         viewModelScope.launch(Dispatchers.IO) {
-            playlistInteractor.deleteTrackFromPlaylist(trackId, playlistId = id)
+            playlistInteractor.deletePlaylist(id)
         }
     }
 

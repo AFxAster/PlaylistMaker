@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="@dimen/bottom_sheet_stick_width"
+        android:layout_height="@dimen/bottom_sheet_stick_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bottom_sheet_stick" />
+
+    <include
+        android:id="@+id/playlist"
+        layout="@layout/playlist_linear_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/playlist_menu_item_height"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/share"
+        style="@style/PlaylistMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/playlist_menu_item_height"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/playlist_menu_item_padding_start"
+        android:text="@string/share" />
+
+    <TextView
+        android:id="@+id/edit_info"
+        style="@style/PlaylistMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/playlist_menu_item_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/playlist_menu_item_padding_start"
+        android:text="@string/edit_info" />
+
+    <TextView
+        android:id="@+id/delete_playlist"
+        style="@style/PlaylistMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/playlist_menu_item_height"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/playlist_menu_item_padding_start"
+        android:text="@string/delete_playlist" />
+
+</LinearLayout>

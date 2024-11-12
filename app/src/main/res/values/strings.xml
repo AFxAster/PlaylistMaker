@@ -67,6 +67,11 @@
     </plurals>
 
     <string name="delete">Удалить</string>
-    <string name="ask_remove_track">Удалить трек?</string>
+    <string name="remove_track">Удалить трек</string>
     <string name="ask_remove_track_confirmation">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+
+    <string name="ask_remove_playlist_confirmation">Вы уверены, что хотите удалить этот плейлист?</string>
 </resources>
