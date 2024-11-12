@@ -24,7 +24,11 @@ class PlaylistRepositoryImpl(
     }
 
     override fun deletePlaylist(id: Long) {
-        database.getPlaylistDao().deletePlaylist(id)
+        with(database.getPlaylistDao()) {
+            val trackIds = getPlaylistById(id).trackIds
+            deletePlaylist(id)
+            trackIds.forEach { removeTrackIfIrrelevant(it) }
+        }
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> = flow {
@@ -62,13 +66,7 @@ class PlaylistRepositoryImpl(
             updatePlaylist(playlist.copy(trackIds = playlist.trackIds.toMutableList().apply {
                 remove(trackId)
             }))
-
-            val playlists = getPlaylists()
-            val ind = playlists.indexOfFirst {
-                it.trackIds.contains(trackId)
-            }
-            if (ind == -1)
-                database.getTrackDao().deleteTrack(trackId)
+            removeTrackIfIrrelevant(trackId)
         }
     }
 
@@ -77,5 +75,14 @@ class PlaylistRepositoryImpl(
             val trackIds = it?.trackIds ?: emptyList()
             emit(trackIds.map { trackId -> database.getTrackDao().getTrackById(trackId).toTrack() })
         }
+    }
+
+    private fun removeTrackIfIrrelevant(trackId: String) {
+        val playlists = database.getPlaylistDao().getPlaylists()
+        val ind = playlists.indexOfFirst {
+            it.trackIds.contains(trackId)
+        }
+        if (ind == -1)
+            database.getTrackDao().deleteTrack(trackId)
     }
 }

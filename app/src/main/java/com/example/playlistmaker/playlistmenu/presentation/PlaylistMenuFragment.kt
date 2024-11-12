@@ -14,7 +14,6 @@ import com.example.playlistmaker.databinding.FragmentPlaylistMenuBinding
 import com.example.playlistmaker.editplaylist.presentation.EditPlaylistFragment
 import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistUI
 import com.example.playlistmaker.playlist.presentation.model.PlaylistUI
-import com.example.playlistmaker.playlist.presentation.state.PlaylistState
 import com.example.playlistmaker.playlistmenu.presentation.viewmodel.PlaylistMenuViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,6 +27,10 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
     private val id by lazy { requireArguments().getLong(PLAYLIST_ID_KEY) }
     private val viewModel: PlaylistMenuViewModel by viewModel {
         parametersOf(id)
+    }
+
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,13 +64,11 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
             }
         }
 
-        viewModel.getState().observe(viewLifecycleOwner) { state ->
-            if (state is PlaylistState.Content) {
-                if (state.playlist == null)
-                    dismiss()
-                else
-                    renderPlaylist(state.playlist.toPlaylistUI())
-            }
+        viewModel.getPlaylist().observe(viewLifecycleOwner) { playlist ->
+            if (playlist == null)
+                dismiss()
+            else
+                renderPlaylist(playlist.toPlaylistUI())
         }
     }
 
@@ -103,9 +104,11 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
     }
 
     private fun sharePlaylist() {
-        val playlist = (viewModel.getState().value as? PlaylistState.Content)?.playlist!!
-        val sb = StringBuilder(
-            "${playlist.name}\n${
+        val playlist = viewModel.getPlaylist().value!!
+        val sb = StringBuilder("${playlist.name}\n")
+        sb.append("${playlist.description}\n")
+        sb.append(
+            "${
                 resources.getQuantityString(
                     R.plurals.track,
                     playlist.tracksNumber,

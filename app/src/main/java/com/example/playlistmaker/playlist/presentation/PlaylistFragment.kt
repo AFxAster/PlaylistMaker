@@ -21,7 +21,6 @@ import com.example.playlistmaker.common.utils.toFormattedTime
 import com.example.playlistmaker.databinding.FragmentPlaylistBinding
 import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistUI
 import com.example.playlistmaker.playlist.presentation.model.PlaylistUI
-import com.example.playlistmaker.playlist.presentation.state.PlaylistState
 import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistViewModel
 import com.example.playlistmaker.playlistmenu.presentation.PlaylistMenuFragment
 import com.example.playlistmaker.search.presentation.TrackViewHolder
@@ -68,17 +67,6 @@ class PlaylistFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
-//            toolbar.navigationIcon = ResourcesCompat.getDrawable(
-//                resources,
-//                R.drawable.ic_arrow_back,
-//                requireContext().theme
-//            ) // todo
-            toolbar.navigationIcon?.setTint(
-                resources.getColor(
-                    R.color.YP_black,
-                    requireContext().theme
-                )
-            )
             tracksRecyclerView.adapter = tracksAdapter
             share.setOnClickListener {
                 if (tracksAdapter.trackList.isEmpty())
@@ -97,24 +85,14 @@ class PlaylistFragment : Fragment() {
             }
         }
 
-        viewModel.getState().observe(viewLifecycleOwner, ::render)
-        viewModel.getTracks().observe(viewLifecycleOwner) { tracks -> renderTracks(tracks) }
-    }
-
-    private fun render(state: PlaylistState) {
-        when (state) {
-            is PlaylistState.Loading -> renderLoading()
-            is PlaylistState.Content -> {
-                if (state.playlist == null)
-                    findNavController().navigateUp()
-                else
-                    renderContent(state.playlist.toPlaylistUI())
-            }
+        viewModel.getPlaylist().observe(viewLifecycleOwner) { playlist ->
+            if (playlist == null)
+                findNavController().navigateUp()
+            else
+                renderContent(playlist.toPlaylistUI())
         }
-    }
 
-    private fun renderLoading() {
-        // todo
+        viewModel.getTracks().observe(viewLifecycleOwner) { tracks -> renderTracks(tracks) }
     }
 
     private fun renderContent(playlist: PlaylistUI) {
@@ -186,9 +164,11 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun sharePlaylist() {
-        val playlist = (viewModel.getState().value as? PlaylistState.Content)?.playlist!!
-        val sb = StringBuilder(
-            "${playlist.name}\n${
+        val playlist = viewModel.getPlaylist().value!!
+        val sb = StringBuilder("${playlist.name}\n")
+        sb.append("${playlist.description}\n")
+        sb.append(
+            "${
                 resources.getQuantityString(
                     R.plurals.track,
                     playlist.tracksNumber,

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.common.entity.Track
-import com.example.playlistmaker.playlist.presentation.state.PlaylistState
 import com.example.playlistmaker.playlistLibrary.domain.api.PlaylistInteractor
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import com.example.playlistmaker.settings.domain.api.SharingInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,21 +17,20 @@ class PlaylistMenuViewModel(
     private val sharingInteractor: SharingInteractor
 ) : ViewModel() {
 
-    private val state: MutableLiveData<PlaylistState> = MutableLiveData()
+    private val playlist: MutableLiveData<Playlist> = MutableLiveData()
     var tracks: List<Track> = emptyList()
         private set
 
-    fun getState(): LiveData<PlaylistState> = state
+    fun getPlaylist(): LiveData<Playlist> = playlist
 
     init {
         loadData()
     }
 
     private fun loadData() {
-        state.value = PlaylistState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.getFlowablePlaylistById(id).collect { playlist ->
-                state.postValue(PlaylistState.Content(playlist))
+                this@PlaylistMenuViewModel.playlist.postValue(playlist)
             }
         }
         viewModelScope.launch(Dispatchers.IO) {
