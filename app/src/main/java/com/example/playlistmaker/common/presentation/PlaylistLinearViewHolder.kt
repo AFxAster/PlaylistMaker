@@ -1,6 +1,7 @@
 package com.example.playlistmaker.common.presentation
 
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.PlaylistLinearItemBinding
 import com.example.playlistmaker.playlistLibrary.presentation.model.PlaylistItemUI
@@ -20,6 +21,8 @@ class PlaylistLinearViewHolder(private val binding: PlaylistLinearItemBinding) :
 
             Glide.with(itemView)
                 .load(model.artworkPath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(artwork)
         }

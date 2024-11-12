@@ -63,11 +63,19 @@ class PlaylistRepositoryImpl(
                 remove(trackId)
             }))
 
+            val playlists = getPlaylists()
+            val ind = playlists.indexOfFirst {
+                it.trackIds.contains(trackId)
+            }
+            if (ind == -1)
+                database.getTrackDao().deleteTrack(trackId)
         }
     }
 
     override fun getTracksToPlaylist(playlistId: Long): Flow<List<Track>> = flow {
-        val trackIds = database.getPlaylistDao().getPlaylistById(playlistId).trackIds
-        emit(trackIds.map { trackId -> database.getTrackDao().getTrackById(trackId).toTrack() })
+        database.getPlaylistDao().getFlowablePlaylistById(playlistId).collect {
+            val trackIds = it?.trackIds ?: emptyList()
+            emit(trackIds.map { trackId -> database.getTrackDao().getTrackById(trackId).toTrack() })
+        }
     }
 }

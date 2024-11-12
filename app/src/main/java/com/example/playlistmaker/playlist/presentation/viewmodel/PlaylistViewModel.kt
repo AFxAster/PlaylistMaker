@@ -41,7 +41,6 @@ class PlaylistViewModel(
     }
 
     fun deleteTrack(trackId: String) {
-        tracks.value = tracks.value!!.toMutableList().apply { removeIf { it.trackId == trackId } }
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.deleteTrackFromPlaylist(trackId, playlistId = id)
         }

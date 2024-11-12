@@ -8,9 +8,9 @@ import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(
-    private val playlistInteractor: PlaylistInteractor,
-    private val imageInteractor: ImageInteractor
+open class NewPlaylistViewModel(
+    protected val playlistInteractor: PlaylistInteractor,
+    protected val imageInteractor: ImageInteractor
 ) : ViewModel() {
 
     fun addPlaylist(playlist: Playlist) {

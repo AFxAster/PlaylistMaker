@@ -1,28 +1,32 @@
-package com.example.playlistmaker.playlistmenubottomsheet.presentation
+package com.example.playlistmaker.playlistmenu.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.common.utils.toFormattedTime
 import com.example.playlistmaker.databinding.FragmentPlaylistMenuBinding
+import com.example.playlistmaker.editplaylist.presentation.EditPlaylistFragment
 import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistUI
 import com.example.playlistmaker.playlist.presentation.model.PlaylistUI
 import com.example.playlistmaker.playlist.presentation.state.PlaylistState
-import com.example.playlistmaker.playlistmenubottomsheet.presentation.viewmodel.PlaylistMenuViewModel
+import com.example.playlistmaker.playlistmenu.presentation.viewmodel.PlaylistMenuViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class PlaylistMenuFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentPlaylistMenuBinding
+    private val id by lazy { requireArguments().getLong(PLAYLIST_ID_KEY) }
     private val viewModel: PlaylistMenuViewModel by viewModel {
-        val id = requireArguments().getLong(PLAYLIST_ID_KEY)
         parametersOf(id)
     }
 
@@ -46,6 +50,16 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
         binding.deletePlaylist.setOnClickListener {
             showDeleteDialog()
         }
+        binding.editInfo.setOnClickListener {
+            dismiss()
+            parentFragmentManager.commit {
+                replace<EditPlaylistFragment>(
+                    R.id.fragment_container,
+                    EditPlaylistFragment.createBundle(id)
+                )
+                addToBackStack(null)
+            }
+        }
 
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             if (state is PlaylistState.Content) {
@@ -68,6 +82,8 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
 
             Glide.with(requireContext())
                 .load(playlistUI.artworkPath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(artwork)
         }

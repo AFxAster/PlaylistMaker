@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.audioplayer.presentation.AudioPlayerActivity
 import com.example.playlistmaker.common.entity.Track
@@ -22,7 +23,7 @@ import com.example.playlistmaker.playlist.presentation.mapper.toPlaylistUI
 import com.example.playlistmaker.playlist.presentation.model.PlaylistUI
 import com.example.playlistmaker.playlist.presentation.state.PlaylistState
 import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistViewModel
-import com.example.playlistmaker.playlistmenubottomsheet.presentation.PlaylistMenuFragment
+import com.example.playlistmaker.playlistmenu.presentation.PlaylistMenuFragment
 import com.example.playlistmaker.search.presentation.TrackViewHolder
 import com.example.playlistmaker.search.presentation.mapper.toTrackUI
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -67,6 +68,11 @@ class PlaylistFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+//            toolbar.navigationIcon = ResourcesCompat.getDrawable(
+//                resources,
+//                R.drawable.ic_arrow_back,
+//                requireContext().theme
+//            ) // todo
             toolbar.navigationIcon?.setTint(
                 resources.getColor(
                     R.color.YP_black,
@@ -121,6 +127,8 @@ class PlaylistFragment : Fragment() {
 
             Glide.with(requireContext())
                 .load(playlist.artworkPath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(artwork)
         }

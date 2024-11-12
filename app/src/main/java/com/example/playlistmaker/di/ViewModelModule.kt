@@ -1,11 +1,12 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.audioplayer.presentation.viewmodel.AudioPlayerViewModel
+import com.example.playlistmaker.editplaylist.presentation.viewmodel.EditPlaylistViewModel
 import com.example.playlistmaker.favourite.presentation.viewmodel.FavouriteViewModel
 import com.example.playlistmaker.newplaylist.presentation.viewmodel.NewPlaylistViewModel
 import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistViewModel
 import com.example.playlistmaker.playlistLibrary.presentation.viewmodel.PlaylistLibraryViewModel
-import com.example.playlistmaker.playlistmenubottomsheet.presentation.viewmodel.PlaylistMenuViewModel
+import com.example.playlistmaker.playlistmenu.presentation.viewmodel.PlaylistMenuViewModel
 import com.example.playlistmaker.playlistsbottomsheet.presentation.viewmodel.PlaylistsBottomSheetViewModel
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
 import com.example.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
@@ -63,6 +64,14 @@ val viewModelModule = module {
             id = params.get(),
             playlistInteractor = get(),
             sharingInteractor = get()
+        )
+    }
+
+    viewModel<EditPlaylistViewModel> { params ->
+        EditPlaylistViewModel(
+            id = params.get(),
+            playlistInteractor = get(),
+            imageInteractor = get()
         )
     }
 }

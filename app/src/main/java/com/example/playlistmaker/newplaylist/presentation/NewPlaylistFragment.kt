@@ -24,8 +24,8 @@ import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment() {
-    private lateinit var binding: FragmentNewPlaylistBinding
+open class NewPlaylistFragment : Fragment() {
+    protected lateinit var binding: FragmentNewPlaylistBinding
     private val requester = PermissionRequester.instance()
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -40,9 +40,9 @@ class NewPlaylistFragment : Fragment() {
                 back()
             }.create()
     }
-    private var lastUri: Uri? = null
+    protected var lastUri: Uri? = null
 
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    protected open val viewModel: NewPlaylistViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +119,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun back() {
+    protected open fun back() {
         try {
             findNavController().navigateUp()
         } catch (e: IllegalStateException) {
