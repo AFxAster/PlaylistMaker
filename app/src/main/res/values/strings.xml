@@ -77,4 +77,6 @@
 
     <string name="save">Сохранить</string>
     <string name="edit">Редактировать</string>
+
+    <string name="empty_tracks_for_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 </resources>

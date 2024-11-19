@@ -2,6 +2,7 @@ package com.example.playlistmaker.newplaylist.presentation
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ open class NewPlaylistFragment : Fragment() {
             setUri(uri)
         }
     private val exitDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationDialog)
             .setTitle(R.string.ask_finish_creating_playlist)
             .setMessage(R.string.lost_data_warning)
             .setNegativeButton(R.string.cancel) { _, _ -> }
@@ -40,7 +41,7 @@ open class NewPlaylistFragment : Fragment() {
                 back()
             }.create()
     }
-    protected var lastUri: Uri? = null
+    protected var lastArtworkPath: String? = null
 
     protected open val viewModel: NewPlaylistViewModel by viewModel()
 
@@ -67,7 +68,7 @@ open class NewPlaylistFragment : Fragment() {
             }
             artwork.setOnClickListener {
                 lifecycleScope.launch {
-                    requester.request(Manifest.permission.READ_EXTERNAL_STORAGE).collect { result ->
+                    requester.request(getMediaPermission()).collect { result ->
                         when (result) {
                             is PermissionResult.Granted -> {
                                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -85,7 +86,7 @@ open class NewPlaylistFragment : Fragment() {
                     descriptionEditText.text!!.let {
                         if (it.isNotBlank()) it.toString().trim() else ""
                     },
-                    lastUri?.toString(),
+                    lastArtworkPath,
                     emptyList()
                 )
                 viewModel.addPlaylist(playlist)
@@ -109,7 +110,7 @@ open class NewPlaylistFragment : Fragment() {
     }
 
     private fun onBack() {
-        if (lastUri != null ||
+        if (lastArtworkPath != null ||
             binding.nameEditText.text?.isNotBlank() == true ||
             binding.descriptionEditText.text?.isNotBlank() == true
         ) {
@@ -130,7 +131,14 @@ open class NewPlaylistFragment : Fragment() {
     private fun setUri(uri: Uri?) {
         if (uri != null) {
             binding.artwork.setImageURI(uri)
-            lastUri = uri
+            lastArtworkPath = uri.toString()
         }
+    }
+
+    private fun getMediaPermission(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else
+            Manifest.permission.READ_EXTERNAL_STORAGE
     }
 }

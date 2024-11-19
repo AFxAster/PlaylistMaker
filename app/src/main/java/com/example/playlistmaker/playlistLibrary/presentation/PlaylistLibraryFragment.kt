@@ -24,6 +24,8 @@ class PlaylistLibraryFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistLibraryBinding
     private val viewModel: PlaylistLibraryViewModel by viewModel()
     private val playlistsAdapter = PlaylistsAdapter(PlaylistsViewState.Grid)
+    private val itemDecoration = PlaylistGridItemDecoration()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +58,13 @@ class PlaylistLibraryFragment : Fragment() {
                 findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
             }
             playlistsRecyclerView.adapter = playlistsAdapter
+            playlistsRecyclerView.addItemDecoration(itemDecoration)
         }
+    }
+
+    override fun onDestroyView() {
+        binding.playlistsRecyclerView.removeItemDecoration(itemDecoration)
+        super.onDestroyView()
     }
 
     private fun render(state: PlaylistLibraryState) {

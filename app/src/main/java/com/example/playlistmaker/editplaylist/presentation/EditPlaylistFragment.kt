@@ -1,6 +1,5 @@
 package com.example.playlistmaker.editplaylist.presentation
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,7 +45,7 @@ class EditPlaylistFragment : NewPlaylistFragment() {
                         description = descriptionEditText.text!!.let {
                             if (it.isNotBlank()) it.toString().trim() else ""
                         },
-                        artworkPath = lastUri?.toString()
+                        artworkPath = lastArtworkPath
                     )
                 viewModel.updatePlaylist(playlist)
                 back()
@@ -75,7 +74,7 @@ class EditPlaylistFragment : NewPlaylistFragment() {
                 .placeholder(R.drawable.ic_placeholder)
                 .into(artwork)
         }
-        lastUri = Uri.parse(playlist.artworkPath)
+        lastArtworkPath = playlist.artworkPath
     }
 
     override fun back() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
@@ -49,7 +50,12 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.share.setOnClickListener { sharePlaylist() }
+        binding.share.setOnClickListener {
+            if (viewModel.tracks.isNotEmpty())
+                sharePlaylist()
+            else
+                showEmptyToast()
+        }
         binding.deletePlaylist.setOnClickListener {
             showDeleteDialog()
         }
@@ -91,7 +97,7 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
     }
 
     private fun showDeleteDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationDialog)
             .setTitle(R.string.delete_playlist)
             .setMessage(R.string.ask_remove_playlist_confirmation)
             .setNegativeButton(R.string.cancel) { _, _ ->
@@ -101,6 +107,14 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
                 viewModel.deleteThisPlaylist()
             }
             .show()
+    }
+
+    private fun showEmptyToast() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.empty_tracks_for_share),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun sharePlaylist() {

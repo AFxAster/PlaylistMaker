@@ -67,12 +67,19 @@ class PlaylistFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+            toolbar.navigationIcon?.setTint(
+                resources.getColor(
+                    R.color.YP_black,
+                    requireContext().theme
+                )
+            )
+
             tracksRecyclerView.adapter = tracksAdapter
             share.setOnClickListener {
-                if (tracksAdapter.trackList.isEmpty())
-                    showEmptyToast()
-                else
+                if (viewModel.getTracks().value!!.isNotEmpty())
                     sharePlaylist()
+                else
+                    showEmptyToast()
             }
             menu.setOnClickListener {
                 val playlistMenuFragment = PlaylistMenuFragment()
@@ -92,7 +99,12 @@ class PlaylistFragment : Fragment() {
                 renderContent(playlist.toPlaylistUI())
         }
 
-        viewModel.getTracks().observe(viewLifecycleOwner) { tracks -> renderTracks(tracks) }
+        viewModel.getTracks().observe(viewLifecycleOwner) { tracks ->
+            if (tracks.isNotEmpty())
+                showTracks(tracks)
+            else
+                showEmpty()
+        }
     }
 
     private fun renderContent(playlist: PlaylistUI) {
@@ -112,8 +124,8 @@ class PlaylistFragment : Fragment() {
         }
     }
 
-    private fun renderTracks(tracks: List<Track>) {
-        tracksAdapter.trackList = tracks.map { it.toTrackUI() }
+    private fun showTracks(tracks: List<Track>) {
+        tracksAdapter.trackList = tracks.map { it.toTrackUI() }.reversed()
 
         val tracksNumber = tracks.size
         val tracksTime = ceil(tracks.sumOf { it.trackTimeMillis } / 60000.0).toInt()
@@ -131,6 +143,18 @@ class PlaylistFragment : Fragment() {
                 tracksTime
             )
         }
+
+        binding.tracksRecyclerView.isVisible = true
+        binding.timeAndNubmerGroup.isVisible = true
+
+        binding.notFoundStub.isVisible = false
+    }
+
+    private fun showEmpty() {
+        binding.notFoundStub.isVisible = true
+
+        binding.tracksRecyclerView.isVisible = false
+        binding.timeAndNubmerGroup.isVisible = false
     }
 
     private fun onTrackClick(trackId: String) {
@@ -145,20 +169,21 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun showDeleteDialog(trackId: String) {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationDialog)
             .setTitle(R.string.remove_track)
             .setMessage(R.string.ask_remove_track_confirmation)
             .setNegativeButton(R.string.cancel) { _, _ -> }
             .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.deleteTrack(trackId)
-            }.show()
+            }
+            .show()
     }
 
 
     private fun showEmptyToast() {
         Toast.makeText(
             requireContext(),
-            "В этом плейлисте нет списка треков, которым можно поделиться",
+            getString(R.string.empty_tracks_for_share),
             Toast.LENGTH_LONG
         ).show()
     }
@@ -176,7 +201,7 @@ class PlaylistFragment : Fragment() {
                 )
             }\n"
         )
-        viewModel.getTracks().value?.forEachIndexed { index, track ->
+        viewModel.getTracks().value!!.forEachIndexed { index, track ->
             sb.append(
                 "${index + 1}. ${track.artistName} - ${track.trackName} ${track.trackTimeMillis.toFormattedTime()}\n"
             )
