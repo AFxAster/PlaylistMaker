@@ -15,14 +15,12 @@ class PlaylistGridItemDecoration : RecyclerView.ItemDecoration() {
         state: RecyclerView.State
     ) {
         val column = parent.getChildAdapterPosition(view) % 2
-        val spacingBetween =
-            (parent.measuredWidth - 2 * 160.toPx(view.resources) - 2 * 16.toPx(view.resources))
 
         if (column == 0) {
             outRect.left = 16.toPx(view.resources)
-            outRect.right = spacingBetween / 2
+            outRect.right = 4.toPx(view.resources)
         } else {
-            outRect.left = spacingBetween / 2
+            outRect.left = 4.toPx(view.resources)
             outRect.right = 16.toPx(view.resources)
         }
         outRect.top = 16.toPx(view.resources)
