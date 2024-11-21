@@ -2,6 +2,7 @@ package com.example.playlistmaker.newplaylist.presentation
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,22 +18,22 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.newplaylist.presentation.viewmodel.NewPlaylistViewModel
-import com.example.playlistmaker.playlist.domain.entity.Playlist
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment() {
-    private lateinit var binding: FragmentNewPlaylistBinding
+open class NewPlaylistFragment : Fragment() {
+    protected lateinit var binding: FragmentNewPlaylistBinding
     private val requester = PermissionRequester.instance()
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             setUri(uri)
         }
     private val exitDialog by lazy {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationDialog)
             .setTitle(R.string.ask_finish_creating_playlist)
             .setMessage(R.string.lost_data_warning)
             .setNegativeButton(R.string.cancel) { _, _ -> }
@@ -40,9 +41,9 @@ class NewPlaylistFragment : Fragment() {
                 back()
             }.create()
     }
-    private var lastUri: Uri? = null
+    protected var lastArtworkPath: String? = null
 
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    protected open val viewModel: NewPlaylistViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +68,7 @@ class NewPlaylistFragment : Fragment() {
             }
             artwork.setOnClickListener {
                 lifecycleScope.launch {
-                    requester.request(Manifest.permission.READ_EXTERNAL_STORAGE).collect { result ->
+                    requester.request(getMediaPermission()).collect { result ->
                         when (result) {
                             is PermissionResult.Granted -> {
                                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -82,8 +83,10 @@ class NewPlaylistFragment : Fragment() {
                 val playlist = Playlist(
                     0,
                     nameEditText.text.toString().trim(),
-                    descriptionEditText.text.toString(),
-                    lastUri?.toString(),
+                    descriptionEditText.text!!.let {
+                        if (it.isNotBlank()) it.toString().trim() else ""
+                    },
+                    lastArtworkPath,
                     emptyList()
                 )
                 viewModel.addPlaylist(playlist)
@@ -107,7 +110,7 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun onBack() {
-        if (lastUri != null ||
+        if (lastArtworkPath != null ||
             binding.nameEditText.text?.isNotBlank() == true ||
             binding.descriptionEditText.text?.isNotBlank() == true
         ) {
@@ -117,7 +120,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun back() {
+    protected open fun back() {
         try {
             findNavController().navigateUp()
         } catch (e: IllegalStateException) {
@@ -128,7 +131,14 @@ class NewPlaylistFragment : Fragment() {
     private fun setUri(uri: Uri?) {
         if (uri != null) {
             binding.artwork.setImageURI(uri)
-            lastUri = uri
+            lastArtworkPath = uri.toString()
         }
+    }
+
+    private fun getMediaPermission(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else
+            Manifest.permission.READ_EXTERNAL_STORAGE
     }
 }

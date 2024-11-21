@@ -9,7 +9,11 @@ import com.example.playlistmaker.search.presentation.model.TrackUI
 
 class TrackViewHolder(private val binding: TrackListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(model: TrackUI, onTrackClickListener: OnTrackClickListener?) {
+    fun bind(
+        model: TrackUI,
+        onTrackClickListener: OnTrackClickListener?,
+        onTrackLongClickListener: OnTrackClickListener?
+    ) {
         binding.trackName.text = model.trackName
         binding.artistName.text = model.artistName
         binding.artistName.updateLayoutParams {
@@ -23,6 +27,10 @@ class TrackViewHolder(private val binding: TrackListItemBinding) :
 
         itemView.setOnClickListener {
             onTrackClickListener?.onTrackClick(model.trackId)
+        }
+        itemView.setOnLongClickListener {
+            onTrackLongClickListener?.onTrackClick(model.trackId)
+            true
         }
     }
 

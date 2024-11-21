@@ -1,10 +1,10 @@
 package com.example.playlistmaker.playlist.presentation.mapper
 
-import com.example.playlistmaker.playlist.domain.entity.Playlist
-import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
+import com.example.playlistmaker.playlist.presentation.model.PlaylistUI
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 
-fun Playlist.toPlaylistItemUI(): PlaylistItemUI {
-    return PlaylistItemUI(
+fun Playlist.toPlaylistUI(): PlaylistUI {
+    return PlaylistUI(
         id = id,
         name = name,
         description = description,

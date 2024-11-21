@@ -4,10 +4,10 @@ import com.example.playlistmaker.audioplayer.data.repository.AudioPlayerReposito
 import com.example.playlistmaker.audioplayer.domain.repository.AudioPlayerRepository
 import com.example.playlistmaker.favourite.data.repository.FavouriteTracksRepositoryImpl
 import com.example.playlistmaker.favourite.domain.repository.FavouriteTracksRepository
-import com.example.playlistmaker.playlist.data.repository.ImageRepositoryImpl
-import com.example.playlistmaker.playlist.data.repository.PlaylistRepositoryImpl
-import com.example.playlistmaker.playlist.domain.repository.ImageRepository
-import com.example.playlistmaker.playlist.domain.repository.PlaylistRepository
+import com.example.playlistmaker.playlistLibrary.data.repository.ImageRepositoryImpl
+import com.example.playlistmaker.playlistLibrary.data.repository.PlaylistRepositoryImpl
+import com.example.playlistmaker.playlistLibrary.domain.repository.ImageRepository
+import com.example.playlistmaker.playlistLibrary.domain.repository.PlaylistRepository
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.repository.TracksRepositoryImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository

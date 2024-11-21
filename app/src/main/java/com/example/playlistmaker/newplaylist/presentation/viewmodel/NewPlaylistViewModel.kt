@@ -2,15 +2,15 @@ package com.example.playlistmaker.newplaylist.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.playlist.domain.api.ImageInteractor
-import com.example.playlistmaker.playlist.domain.api.PlaylistInteractor
-import com.example.playlistmaker.playlist.domain.entity.Playlist
+import com.example.playlistmaker.playlistLibrary.domain.api.ImageInteractor
+import com.example.playlistmaker.playlistLibrary.domain.api.PlaylistInteractor
+import com.example.playlistmaker.playlistLibrary.domain.entity.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(
-    private val playlistInteractor: PlaylistInteractor,
-    private val imageInteractor: ImageInteractor
+open class NewPlaylistViewModel(
+    protected val playlistInteractor: PlaylistInteractor,
+    protected val imageInteractor: ImageInteractor
 ) : ViewModel() {
 
     fun addPlaylist(playlist: Playlist) {

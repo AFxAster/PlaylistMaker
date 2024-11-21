@@ -6,10 +6,10 @@ import androidx.room.TypeConverters
 import com.example.playlistmaker.common.data.db.convertor.Converters
 import com.example.playlistmaker.favourite.data.db.dao.FavouriteTracksDAO
 import com.example.playlistmaker.favourite.data.db.entity.FavouriteTrackEntity
-import com.example.playlistmaker.playlist.data.db.dao.PlaylistDAO
-import com.example.playlistmaker.playlist.data.db.dao.TrackDao
-import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
-import com.example.playlistmaker.playlist.data.db.entity.TrackEntity
+import com.example.playlistmaker.playlistLibrary.data.db.dao.PlaylistDAO
+import com.example.playlistmaker.playlistLibrary.data.db.dao.TrackDao
+import com.example.playlistmaker.playlistLibrary.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.playlistLibrary.data.db.entity.TrackEntity
 
 
 @Database(

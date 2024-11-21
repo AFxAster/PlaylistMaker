@@ -17,7 +17,11 @@
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/playlists_bottom_sheet</item>
+        <item name="android:background">@drawable/bottom_sheet</item>
         <item name="behavior_peekHeight">500dp</item>
+    </style>
+
+    <style name="ConfirmationDialog" parent="MaterialAlertDialog.Material3">
+        <item name="colorPrimary">@color/YP_blue</item>
     </style>
 </resources>

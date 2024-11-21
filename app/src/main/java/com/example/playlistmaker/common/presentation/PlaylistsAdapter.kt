@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.common.presentation.state.PlaylistsViewState
 import com.example.playlistmaker.databinding.PlaylistGridItemBinding
 import com.example.playlistmaker.databinding.PlaylistLinearItemBinding
-import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
+import com.example.playlistmaker.playlistLibrary.presentation.model.PlaylistItemUI
 
 class PlaylistsAdapter(
     private val state: PlaylistsViewState

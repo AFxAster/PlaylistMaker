@@ -1,9 +1,10 @@
 package com.example.playlistmaker.common.presentation
 
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.PlaylistGridItemBinding
-import com.example.playlistmaker.playlist.presentation.model.PlaylistItemUI
+import com.example.playlistmaker.playlistLibrary.presentation.model.PlaylistItemUI
 
 class PlaylistGridViewHolder(private val binding: PlaylistGridItemBinding) :
     PlaylistViewHolder(binding.root) {
@@ -20,6 +21,8 @@ class PlaylistGridViewHolder(private val binding: PlaylistGridItemBinding) :
 
             Glide.with(itemView)
                 .load(model.artworkPath)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.ic_placeholder)
                 .into(artwork)
         }

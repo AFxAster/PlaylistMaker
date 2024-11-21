@@ -7,9 +7,13 @@ import com.example.playlistmaker.settings.domain.repository.SharingRepository
 class SharingInteractorImpl(
     private val sharingRepository: SharingRepository,
     private val linkRepository: LinkRepository
-): SharingInteractor {
+) : SharingInteractor {
     override fun shareApp() {
-        sharingRepository.shareLink(linkRepository.getShareAppLink())
+        sharingRepository.shareText(linkRepository.getShareAppLink())
+    }
+
+    override fun shareText(text: String) {
+        sharingRepository.shareText(text)
     }
 
     override fun openTerms() {

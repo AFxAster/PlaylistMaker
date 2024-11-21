@@ -20,10 +20,3 @@ fun Track.toPlayerTrackUI(): PlayerTrackUI {
         isFavourite = isFavourite
     )
 }
-
-fun Int.toFormattedPosition(): String {
-    return SimpleDateFormat(
-        "m:ss",
-        Locale.getDefault()
-    ).format(this)
-}
