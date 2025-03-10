@@ -16,3 +16,5 @@
 - Koin  
 - Jetpack Navigation  
 - Single Activity, Clean Architecture, MVVM
+
+Min SDK — 29, Kotlin version — 1.9.22
