@@ -18,7 +18,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AudioPlayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAudioPlayerBinding
+    private var _binding: ActivityAudioPlayerBinding? = null
+    private val binding get() = _binding!!
 
     private val trackId by lazy { intent.getStringExtra(TRACK_ID_KEY) ?: "" }
     private val viewModel: AudioPlayerViewModel by viewModel {
@@ -27,7 +28,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
+        _binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         with(binding) {
@@ -159,6 +160,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         viewModel.pause()
+        _binding = null
     }
 
     companion object {

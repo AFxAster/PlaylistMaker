@@ -25,7 +25,8 @@ import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val searchedTracksAdapter = TracksAdapter()
     private val tracksHistoryAdapter = TracksAdapter()
@@ -38,16 +39,12 @@ class SearchFragment : Fragment() {
         action = ::onTrackClick
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentSearchBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -63,6 +60,11 @@ class SearchFragment : Fragment() {
         initSearchField()
 
         viewModel.getState().observe(viewLifecycleOwner, ::render)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initSearchField() {

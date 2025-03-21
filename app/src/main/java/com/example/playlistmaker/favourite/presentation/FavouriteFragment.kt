@@ -22,7 +22,8 @@ import com.example.playlistmaker.search.presentation.model.TrackUI
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavouriteFragment : Fragment() {
-    private lateinit var binding: FragmentFavouriteBinding
+    private var _binding: FragmentFavouriteBinding? = null
+    private val binding get() = _binding!!
     private val tracksAdapter = TracksAdapter()
     private val viewModel: FavouriteViewModel by viewModel()
 
@@ -32,16 +33,12 @@ class FavouriteFragment : Fragment() {
         action = ::onTrackClick
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentFavouriteBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentFavouriteBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -60,6 +57,11 @@ class FavouriteFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             render(state)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun render(state: FavouriteState) {

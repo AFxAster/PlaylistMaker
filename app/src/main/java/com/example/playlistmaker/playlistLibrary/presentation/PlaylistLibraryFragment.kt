@@ -21,22 +21,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistLibraryFragment : Fragment() {
 
-    private lateinit var binding: FragmentPlaylistLibraryBinding
+    private var _binding: FragmentPlaylistLibraryBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: PlaylistLibraryViewModel by viewModel()
     private val playlistsAdapter = PlaylistsAdapter(PlaylistsViewState.Grid)
     private val itemDecoration = PlaylistGridItemDecoration()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentPlaylistLibraryBinding.inflate(layoutInflater)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentPlaylistLibraryBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -63,8 +59,9 @@ class PlaylistLibraryFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        binding.playlistsRecyclerView.removeItemDecoration(itemDecoration)
         super.onDestroyView()
+        binding.playlistsRecyclerView.removeItemDecoration(itemDecoration)
+        _binding = null
     }
 
     private fun render(state: PlaylistLibraryState) {

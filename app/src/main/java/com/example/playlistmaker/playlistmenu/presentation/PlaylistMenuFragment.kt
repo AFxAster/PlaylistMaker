@@ -24,7 +24,8 @@ import org.koin.core.parameter.parametersOf
 
 class PlaylistMenuFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentPlaylistMenuBinding
+    private var _binding: FragmentPlaylistMenuBinding? = null
+    private val binding get() = _binding!!
     private val id by lazy { requireArguments().getLong(PLAYLIST_ID_KEY) }
     private val viewModel: PlaylistMenuViewModel by viewModel {
         parametersOf(id)
@@ -34,16 +35,12 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
         return R.style.AppBottomSheetDialogTheme
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentPlaylistMenuBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentPlaylistMenuBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -76,6 +73,11 @@ class PlaylistMenuFragment : BottomSheetDialogFragment() {
             else
                 renderPlaylist(playlist.toPlaylistUI())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderPlaylist(playlistUI: PlaylistUI) {

@@ -1,9 +1,7 @@
 package com.example.playlistmaker.editplaylist.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
@@ -20,13 +18,6 @@ class EditPlaylistFragment : NewPlaylistFragment() {
     override val viewModel: EditPlaylistViewModel by viewModel {
         val id = requireArguments().getLong(PLAYLIST_ID_KEY)
         parametersOf(id)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
