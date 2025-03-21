@@ -32,7 +32,8 @@ import kotlin.math.ceil
 
 class PlaylistFragment : Fragment() {
     private val id by lazy { requireArguments().getLong(PLAYLIST_ID_KEY) }
-    private lateinit var binding: FragmentPlaylistBinding
+    private var _binding: FragmentPlaylistBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: PlaylistViewModel by viewModel {
         parametersOf(id)
     }
@@ -43,16 +44,11 @@ class PlaylistFragment : Fragment() {
         action = ::onTrackClick
     )
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentPlaylistBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentPlaylistBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -105,6 +101,11 @@ class PlaylistFragment : Fragment() {
             else
                 showEmpty()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderContent(playlist: PlaylistUI) {

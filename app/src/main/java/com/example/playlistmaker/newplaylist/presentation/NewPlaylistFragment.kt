@@ -26,7 +26,8 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class NewPlaylistFragment : Fragment() {
-    protected lateinit var binding: FragmentNewPlaylistBinding
+    private var _binding: FragmentNewPlaylistBinding? = null
+    protected val binding get() = _binding!!
     private val requester = PermissionRequester.instance()
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -45,15 +46,11 @@ open class NewPlaylistFragment : Fragment() {
 
     protected open val viewModel: NewPlaylistViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentNewPlaylistBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentNewPlaylistBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -99,6 +96,11 @@ open class NewPlaylistFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             onBack()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showToast() {

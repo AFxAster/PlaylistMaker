@@ -11,18 +11,17 @@ import com.example.playlistmaker.settings.presentation.viewmodel.SettingsViewMod
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
-    private lateinit var binding: FragmentSettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: SettingsViewModel by viewModel()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentSettingsBinding.inflate(layoutInflater)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentSettingsBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -50,5 +49,10 @@ class SettingsFragment : Fragment() {
         viewModel.getIsDarkTheme().observe(viewLifecycleOwner) {
             (requireActivity().applicationContext as App).switchTheme(it)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

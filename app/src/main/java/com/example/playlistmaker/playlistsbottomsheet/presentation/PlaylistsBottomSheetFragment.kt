@@ -25,7 +25,8 @@ import org.koin.core.parameter.parametersOf
 
 class PlaylistsBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentPlaylistsBottomSheetBinding
+    private var _binding: FragmentPlaylistsBottomSheetBinding? = null
+    private val binding get() = _binding!!
 
     private val playlistsAdapter = PlaylistsAdapter(PlaylistsViewState.Linear)
 
@@ -44,16 +45,12 @@ class PlaylistsBottomSheetFragment : BottomSheetDialogFragment() {
         return R.style.AppBottomSheetDialogTheme
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentPlaylistsBottomSheetBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentPlaylistsBottomSheetBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -81,6 +78,11 @@ class PlaylistsBottomSheetFragment : BottomSheetDialogFragment() {
         viewModel.getAddingStatus().observe(viewLifecycleOwner) { status ->
             showAddedDialog(status)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
