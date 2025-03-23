@@ -15,4 +15,9 @@
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
+    <item
+        android:id="@+id/releasedFragment"
+        android:icon="@drawable/ic_released"
+        android:title="@string/released_tracks" />
+
 </menu>

@@ -62,4 +62,9 @@
             android:id="@+id/action_playlistFragment_to_audioPlayerActivity"
             app:destination="@id/audioPlayerActivity" />
     </fragment>
+    <fragment
+        android:id="@+id/releasedFragment"
+        android:name="com.example.playlistmaker.released.presentation.ReleasedFragment"
+        android:label="ReleasedFragment"
+        tools:layout="@layout/fragment_released" />
 </navigation>
