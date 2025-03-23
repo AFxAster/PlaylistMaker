@@ -8,6 +8,8 @@ import com.example.playlistmaker.playlistLibrary.data.repository.ImageRepository
 import com.example.playlistmaker.playlistLibrary.data.repository.PlaylistRepositoryImpl
 import com.example.playlistmaker.playlistLibrary.domain.repository.ImageRepository
 import com.example.playlistmaker.playlistLibrary.domain.repository.PlaylistRepository
+import com.example.playlistmaker.released.data.repository.ReleasedRepositoryImpl
+import com.example.playlistmaker.released.domain.repository.ReleasedRepository
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.repository.TracksRepositoryImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
@@ -57,4 +59,8 @@ val repositoryModule = module {
     single<ImageRepository> {
         ImageRepositoryImpl(androidContext())
     }
+    single<ReleasedRepository> {
+        ReleasedRepositoryImpl()
+    }
+
 }
