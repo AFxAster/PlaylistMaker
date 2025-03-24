@@ -6,7 +6,7 @@ data class Release(
     val id: String,
     val releaseName: String,
     val artistName: String,
-    val type: String,
+    val type: ReleaseType,
     val artworkUrl100: String,
     val releaseDate: Date
 )

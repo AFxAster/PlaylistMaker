@@ -23,7 +23,9 @@ class ReleasedViewModel(
         state.value = ReleasedState.Loading
         viewModelScope.launch {
             releasedInteractor.getReleasedFrom(Date()).collect {
-                state.value = ReleasedState.Content(it)
+                it?.let {
+                    state.value = ReleasedState.Content(it)
+                }
             }
         }
     }

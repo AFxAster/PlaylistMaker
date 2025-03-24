@@ -2,22 +2,31 @@ package com.example.playlistmaker.released.data.repository
 
 import com.example.playlistmaker.released.domain.entity.Release
 import com.example.playlistmaker.released.domain.repository.ReleasedRepository
+import com.example.playlistmaker.search.data.TracksNetworkClient
+import com.example.playlistmaker.search.data.dto.GetReleasesByArtistIdRequest
+import com.example.playlistmaker.search.data.dto.ReleasesByArtistResponse
+import com.example.playlistmaker.search.data.mapper.toRelease
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.net.HttpURLConnection
 import java.util.Date
 
-class ReleasedRepositoryImpl : ReleasedRepository {
-    override fun getReleasedFrom(date: Date): Flow<List<Release>> = flow {
-        emit(
-            listOf(
-                Release("1", "Сложная", "Лилая", "сингл", "", Date()),
-                Release("2", "Дико, например", "Pharaoh", "сингл", "", Date()),
-                Release("3", "Прометей роняет факел", "Horus", "альбом", "", Date()),
-                Release("4", "Не хватит сил", "слёзы в ампулах", "сингл", "", Date()),
-                Release("5", "Океаны", "GUMA, TEMNEE", "сингл", "", Date()),
-                Release("5", "Океаны", "GUMA, TEMNEE", "сингл", "", Date()),
-                Release("5", "Океаны", "GUMA, TEMNEE", "сингл", "", Date()),
-            )
-        )
+class ReleasedRepositoryImpl(
+    private val tracksNetworkClient: TracksNetworkClient
+) : ReleasedRepository {
+    override fun getReleasedFrom(date: Date): Flow<List<Release>?> = flow {
+        val response =
+            tracksNetworkClient.getReleasesByArtistId(GetReleasesByArtistIdRequest("1564157271"))
+        if (response.responseCode == HttpURLConnection.HTTP_OK && response is ReleasesByArtistResponse) {
+            emit(response.results.mapNotNull {
+                if (it.collectionName == null)
+                    null
+                else
+                    it.toRelease()
+            })
+        } else {
+            emit(null)
+        }
+
     }
 }

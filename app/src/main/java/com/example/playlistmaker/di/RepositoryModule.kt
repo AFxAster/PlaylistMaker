@@ -60,7 +60,7 @@ val repositoryModule = module {
         ImageRepositoryImpl(androidContext())
     }
     single<ReleasedRepository> {
-        ReleasedRepositoryImpl()
+        ReleasedRepositoryImpl(tracksNetworkClient = get())
     }
 
 }

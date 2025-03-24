@@ -81,4 +81,6 @@
 
     <string name="empty_tracks_for_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="add_artist">Добавить исполнителя</string>
+
+    <string name="single">Сингл</string>
 </resources>
