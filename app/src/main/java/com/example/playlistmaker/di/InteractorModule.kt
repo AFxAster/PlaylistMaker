@@ -8,7 +8,9 @@ import com.example.playlistmaker.playlistLibrary.domain.api.ImageInteractor
 import com.example.playlistmaker.playlistLibrary.domain.api.PlaylistInteractor
 import com.example.playlistmaker.playlistLibrary.domain.interactor.ImageInteractorImpl
 import com.example.playlistmaker.playlistLibrary.domain.interactor.PlaylistInteractorImpl
+import com.example.playlistmaker.released.domain.api.FollowedArtistsInteractor
 import com.example.playlistmaker.released.domain.api.ReleasedInteractor
+import com.example.playlistmaker.released.domain.interactor.FollowedArtistsInteractorImpl
 import com.example.playlistmaker.released.domain.interactor.ReleseadInteractorImpl
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
@@ -55,5 +57,9 @@ val interactorModule = module {
 
     factory<ReleasedInteractor> {
         ReleseadInteractorImpl(releasedRepository = get())
+    }
+
+    factory<FollowedArtistsInteractor> {
+        FollowedArtistsInteractorImpl(followedArtistsRepository = get())
     }
 }
