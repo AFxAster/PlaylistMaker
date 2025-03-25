@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
+import com.example.playlistmaker.common.presentation.GridSpacingItemDecoration
 import com.example.playlistmaker.common.presentation.PlaylistViewHolder
 import com.example.playlistmaker.common.presentation.PlaylistsAdapter
 import com.example.playlistmaker.common.presentation.state.PlaylistsViewState
@@ -25,7 +26,13 @@ class PlaylistLibraryFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PlaylistLibraryViewModel by viewModel()
     private val playlistsAdapter = PlaylistsAdapter(PlaylistsViewState.Grid)
-    private val itemDecoration = PlaylistGridItemDecoration()
+    private val itemDecoration = GridSpacingItemDecoration(
+        spanCount = 2,
+        horizontalSpacing = 8,
+        verticalSpacing = 16,
+        horizontalEdgeSpacing = 16,
+        verticalEdgeSpacing = 0
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,

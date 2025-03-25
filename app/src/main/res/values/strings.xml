@@ -3,6 +3,7 @@
     <string name="library">Медиатека</string>
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
+    <string name="released_tracks">Новые релизы</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="write_to_support">Написать в поддержку</string>
@@ -79,4 +80,7 @@
     <string name="edit">Редактировать</string>
 
     <string name="empty_tracks_for_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="add_artist">Добавить исполнителя</string>
+
+    <string name="single">Сингл</string>
 </resources>

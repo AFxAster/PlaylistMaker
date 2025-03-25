@@ -8,6 +8,7 @@ import com.example.playlistmaker.playlist.presentation.viewmodel.PlaylistViewMod
 import com.example.playlistmaker.playlistLibrary.presentation.viewmodel.PlaylistLibraryViewModel
 import com.example.playlistmaker.playlistmenu.presentation.viewmodel.PlaylistMenuViewModel
 import com.example.playlistmaker.playlistsbottomsheet.presentation.viewmodel.PlaylistsBottomSheetViewModel
+import com.example.playlistmaker.released.presentation.ReleasedViewModel
 import com.example.playlistmaker.search.presentation.viewmodel.SearchViewModel
 import com.example.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -73,5 +74,9 @@ val viewModelModule = module {
             playlistInteractor = get(),
             imageInteractor = get()
         )
+    }
+
+    viewModel<ReleasedViewModel> {
+        ReleasedViewModel(releasedInteractor = get())
     }
 }

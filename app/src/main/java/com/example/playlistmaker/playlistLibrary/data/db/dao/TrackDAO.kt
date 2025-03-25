@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.example.playlistmaker.playlistLibrary.data.db.entity.TrackEntity
 
 @Dao
-interface TrackDao {
+interface TrackDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTrack(track: TrackEntity)

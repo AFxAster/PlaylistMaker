@@ -35,7 +35,7 @@
             tools:text="LOVESONGS" />
 
         <TextView
-            android:id="@+id/tracksNumber"
+            android:id="@+id/tracks_number"
             style="@style/PlaylistItemInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
