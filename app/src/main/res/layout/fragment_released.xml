@@ -18,6 +18,7 @@
         app:titleMarginTop="14dp"
         app:titleTextAppearance="@style/Header" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/released_recycler_view"
         android:layout_width="match_parent"
