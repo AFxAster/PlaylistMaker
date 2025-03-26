@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface ReleasedRepository {
-    fun getReleasedFrom(date: Date): Flow<List<Release>?>
+    fun getReleasesFrom(date: Date): Flow<List<Release>?>
 }

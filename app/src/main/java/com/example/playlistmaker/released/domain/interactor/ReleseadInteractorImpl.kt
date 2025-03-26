@@ -9,7 +9,7 @@ import java.util.Date
 class ReleseadInteractorImpl(
     private val releasedRepository: ReleasedRepository
 ) : ReleasedInteractor {
-    override fun getReleasedFrom(date: Date): Flow<List<Release>?> {
-        return releasedRepository.getReleasedFrom(date)
+    override fun getReleasesFrom(date: Date): Flow<List<Release>?> {
+        return releasedRepository.getReleasesFrom(date)
     }
 }

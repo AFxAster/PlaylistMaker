@@ -5,17 +5,17 @@ import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.example.playlistmaker.common.data.db.AppDatabase
-import com.example.playlistmaker.search.data.TracksNetworkClient
+import com.example.playlistmaker.search.data.ITunesNetworkClient
 import com.example.playlistmaker.search.data.network.ITunesApi
-import com.example.playlistmaker.search.data.network.TrackRetrofitTracksNetworkClient
+import com.example.playlistmaker.search.data.network.ITunesRetrofitNetworkClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
-    single<TracksNetworkClient> {
-        TrackRetrofitTracksNetworkClient(api = get())
+    single<ITunesNetworkClient> {
+        ITunesRetrofitNetworkClient(api = get())
     }
 
     single<ITunesApi> {

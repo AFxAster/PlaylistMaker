@@ -2,10 +2,10 @@ package com.example.playlistmaker.search.data.repository
 
 import com.example.playlistmaker.common.data.db.AppDatabase
 import com.example.playlistmaker.common.entity.Track
-import com.example.playlistmaker.search.data.TracksNetworkClient
+import com.example.playlistmaker.search.data.ITunesNetworkClient
 import com.example.playlistmaker.search.data.dto.GetTrackByIdRequest
 import com.example.playlistmaker.search.data.dto.GetTracksRequest
-import com.example.playlistmaker.search.data.dto.ITunesResponse
+import com.example.playlistmaker.search.data.dto.TracksResponse
 import com.example.playlistmaker.search.data.mapper.toTrack
 import com.example.playlistmaker.search.domain.repository.TracksRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class TracksRepositoryImpl(
-    private val tracksNetworkClient: TracksNetworkClient,
+    private val iTunesNetworkClient: ITunesNetworkClient,
     private val database: AppDatabase
 ) : TracksRepository {
 
     override fun getTracks(query: String): Flow<List<Track>?> = flow {
-        val response = tracksNetworkClient.getTracks(requestParams = GetTracksRequest(query))
-        if (response.responseCode == 200 && response is ITunesResponse) {
+        val response = iTunesNetworkClient.getTracks(requestParams = GetTracksRequest(query))
+        if (response.responseCode == 200 && response is TracksResponse) {
             val favouriteTracksIds: List<String>
             withContext(Dispatchers.IO) {
                 favouriteTracksIds =
@@ -35,8 +35,8 @@ class TracksRepositoryImpl(
     }
 
     override fun getTrackById(id: String): Flow<Track?> = flow {
-        val response = tracksNetworkClient.getTrackById(requestParams = GetTrackByIdRequest(id))
-        if (response.responseCode == 200 && response is ITunesResponse) {
+        val response = iTunesNetworkClient.getTrackById(requestParams = GetTrackByIdRequest(id))
+        if (response.responseCode == 200 && response is TracksResponse) {
             val isFavourite: Boolean
             withContext(Dispatchers.IO) {
                 isFavourite = database.getFavouriteTracksDao().getIsFavouriteTrackById(id.toInt())

@@ -43,7 +43,7 @@ val repositoryModule = module {
     }
 
     single<TracksRepository> {
-        TracksRepositoryImpl(tracksNetworkClient = get(), database = get())
+        TracksRepositoryImpl(iTunesNetworkClient = get(), database = get())
     }
 
     factory<AudioPlayerRepository> {
@@ -63,7 +63,7 @@ val repositoryModule = module {
     }
 
     single<ReleasedRepository> {
-        ReleasedRepositoryImpl(tracksNetworkClient = get())
+        ReleasedRepositoryImpl(iTunesNetworkClient = get())
     }
 
     single<FollowedArtistsRepository> {
