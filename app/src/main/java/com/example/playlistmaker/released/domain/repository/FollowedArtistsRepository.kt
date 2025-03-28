@@ -1,12 +1,13 @@
 package com.example.playlistmaker.released.domain.repository
 
 import com.example.playlistmaker.released.domain.entity.Artist
+import kotlinx.coroutines.flow.Flow
 
 interface FollowedArtistsRepository {
 
-    fun addFollowedArtist(artist: Artist)
+    fun followArtist(artist: Artist)
 
-    fun deleteFollowedArtist(artist: Artist)
+    fun unfollowArtist(artist: Artist)
 
-    fun getFollowedArtists(): List<Artist>
+    fun getFollowedArtists(): Flow<List<Artist>?>
 }

@@ -77,6 +77,6 @@ val viewModelModule = module {
     }
 
     viewModel<ReleasedViewModel> {
-        ReleasedViewModel(releasedInteractor = get())
+        ReleasedViewModel(releasedInteractor = get(), artistsInteractor = get())
     }
 }

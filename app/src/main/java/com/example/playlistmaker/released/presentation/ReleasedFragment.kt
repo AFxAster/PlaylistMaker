@@ -3,6 +3,7 @@ package com.example.playlistmaker.released.presentation
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,17 +65,16 @@ class ReleasedFragment : Fragment() {
             }
         }
 
-        artistAdapter.artists = listOf(
-            Artist(
-                id = "1564157271",
-                name = "bastiense"
-            ),
-            Artist(
-                id = "1595600259",
-                name = "MONRAU"
-            ),
-        )
-
+//        artistAdapter.artists = listOf(
+//            Artist(
+//                id = "1564157271",
+//                name = "bastiense"
+//            ),
+//            Artist(
+//                id = "1595600259",
+//                name = "MONRAU"
+//            ),
+//        )
 
 
         viewModel.getState().observe(viewLifecycleOwner, ::render)
@@ -102,28 +102,40 @@ class ReleasedFragment : Fragment() {
         with(dialogBinding) {
             clearButton.setOnClickListener {
                 autocompleteInput.setText("")
-                val inputMethodManager =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(
-                    clearButton.windowToken,
-                    0
-                )
+                hideKeyboard(clearButton.windowToken)
             }
             autocompleteInput.setAdapter(artistAdapter)
-            autocompleteInput.doOnTextChanged { text, start, before, count ->
+//            autocompleteInput.setOnClickListener {
+//                autocompleteInput.showDropDown()
+//            }
+        }
+
+        with(dialogBinding.autocompleteInput) {
+            val textWatcher = doOnTextChanged { text, start, before, count ->
                 val searchInput = text?.toString() ?: ""
 
-                clearButton.isVisible = searchInput.isNotBlank()
+                dialogBinding.clearButton.isVisible = searchInput.isNotBlank()
                 viewModel.debounceRequest(searchInput)
+            }
 
+            artistAdapter.onArtistClickListener = ArtistAdapter.OnArtistClickListener {
+                removeTextChangedListener(textWatcher)
+                setText(it.name)
+                addTextChangedListener(textWatcher)
+                dismissDropDown()
+                clearFocus()
+                hideKeyboard(windowToken)
+
+                viewModel.selectedArtist = it
             }
         }
+
 
         AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
             .setTitle(R.string.add_artist)
             .setPositiveButton(R.string.ok) { dialog, id ->
-                TODO()
+                viewModel.followSelectedArtist()
             }
             .setNegativeButton(R.string.cancel) { dialog, id ->
                 dialog.cancel()
@@ -131,6 +143,7 @@ class ReleasedFragment : Fragment() {
             .setOnDismissListener {
                 viewModel.getArtistState().removeObservers(viewLifecycleOwner)
                 _dialogBinding = null
+                viewModel.clearArtists()
             }
             .create()
             .show()
@@ -149,6 +162,7 @@ class ReleasedFragment : Fragment() {
     private fun renderArtistContent(artists: List<Artist>) {
         artistAdapter.artists = artists
         with(dialogBinding) {
+            autocompleteInput.showDropDown()
             loading.isVisible = false
         }
     }
@@ -157,5 +171,14 @@ class ReleasedFragment : Fragment() {
         with(dialogBinding) {
             loading.isVisible = true
         }
+    }
+
+    private fun hideKeyboard(windowToken: IBinder) {
+        val inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(
+            windowToken,
+            0
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.data.dto
+package com.example.playlistmaker.released.data.dto
 
 import java.util.Date
 

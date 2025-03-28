@@ -5,19 +5,21 @@ import com.example.playlistmaker.released.data.toArtist
 import com.example.playlistmaker.released.data.toFollowedArtistEntity
 import com.example.playlistmaker.released.domain.entity.Artist
 import com.example.playlistmaker.released.domain.repository.FollowedArtistsRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FollowedArtistsRepositoryImpl(
     private val database: AppDatabase
 ) : FollowedArtistsRepository {
-    override fun addFollowedArtist(artist: Artist) {
+    override fun followArtist(artist: Artist) {
         database.getArtistDao().insertFollowedArtist(artist.toFollowedArtistEntity())
     }
 
-    override fun deleteFollowedArtist(artist: Artist) {
+    override fun unfollowArtist(artist: Artist) {
         database.getArtistDao().deleteFollowedArtist(artist.toFollowedArtistEntity())
     }
 
-    override fun getFollowedArtists(): List<Artist> {
-        return database.getArtistDao().getFollowedArtists().map { it.toArtist() }
+    override fun getFollowedArtists(): Flow<List<Artist>?> = flow {
+        emit(database.getArtistDao().getFollowedArtists().map { it.toArtist() })
     }
 }

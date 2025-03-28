@@ -8,8 +8,10 @@ import com.example.playlistmaker.playlistLibrary.data.repository.ImageRepository
 import com.example.playlistmaker.playlistLibrary.data.repository.PlaylistRepositoryImpl
 import com.example.playlistmaker.playlistLibrary.domain.repository.ImageRepository
 import com.example.playlistmaker.playlistLibrary.domain.repository.PlaylistRepository
+import com.example.playlistmaker.released.data.repository.ArtistsRepositoryImpl
 import com.example.playlistmaker.released.data.repository.FollowedArtistsRepositoryImpl
 import com.example.playlistmaker.released.data.repository.ReleasedRepositoryImpl
+import com.example.playlistmaker.released.domain.repository.ArtistsRepository
 import com.example.playlistmaker.released.domain.repository.FollowedArtistsRepository
 import com.example.playlistmaker.released.domain.repository.ReleasedRepository
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
@@ -68,5 +70,9 @@ val repositoryModule = module {
 
     single<FollowedArtistsRepository> {
         FollowedArtistsRepositoryImpl(database = get())
+    }
+
+    single<ArtistsRepository> {
+        ArtistsRepositoryImpl(networkClient = get())
     }
 }

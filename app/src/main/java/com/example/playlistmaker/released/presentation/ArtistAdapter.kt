@@ -12,6 +12,7 @@ import com.example.playlistmaker.released.domain.entity.Artist
 class ArtistAdapter : BaseAdapter(), Filterable {
 
     var artists: List<Artist> = emptyList()
+    var onArtistClickListener: OnArtistClickListener? = null
 
     private val filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
@@ -45,5 +46,13 @@ class ArtistAdapter : BaseAdapter(), Filterable {
 
     private fun bind(binding: SelectArtistItemBinding, model: Artist) {
         binding.name.text = model.name
+
+        binding.root.setOnClickListener {
+            onArtistClickListener?.onArtistClick(model)
+        }
+    }
+
+    fun interface OnArtistClickListener {
+        fun onArtistClick(artist: Artist)
     }
 }

@@ -1,9 +1,9 @@
 package com.example.playlistmaker.search.data.network
 
 import android.util.Log
+import com.example.playlistmaker.released.data.dto.GetArtistsRequest
+import com.example.playlistmaker.released.data.dto.GetReleasesByArtistIdRequest
 import com.example.playlistmaker.search.data.ITunesNetworkClient
-import com.example.playlistmaker.search.data.dto.GetArtistsRequest
-import com.example.playlistmaker.search.data.dto.GetReleasesByArtistIdRequest
 import com.example.playlistmaker.search.data.dto.GetTrackByIdRequest
 import com.example.playlistmaker.search.data.dto.GetTracksRequest
 import com.example.playlistmaker.search.data.dto.Response
@@ -46,9 +46,22 @@ class ITunesRetrofitNetworkClient(private val api: ITunesApi) : ITunesNetworkCli
         else
             withContext(Dispatchers.IO) {
                 try {
-                    api.foo(requestParams.artistId).apply { responseCode = 200 }
+                    api.getReleasesByArtistId(requestParams.artistId).apply { responseCode = 200 }
                 } catch (ex: Exception) {
                     Log.d("my", ex.toString())
+                    Response().apply { responseCode = 400 }
+                }
+            }
+    }
+
+    override suspend fun getArtists(requestParams: Any): Response {
+        return if (requestParams !is GetArtistsRequest)
+            Response().apply { responseCode = 400 }
+        else
+            withContext(Dispatchers.IO) {
+                try {
+                    api.getArtists(requestParams.query).apply { responseCode = 200 }
+                } catch (ex: Exception) {
                     Response().apply { responseCode = 400 }
                 }
             }
