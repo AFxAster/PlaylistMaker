@@ -1,56 +1,62 @@
 package com.example.playlistmaker.released.presentation
 
-import android.content.res.Resources
-import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ReleasedGridItemBinding
 import com.example.playlistmaker.released.domain.entity.Release
-import com.example.playlistmaker.released.domain.entity.ReleaseType
 
-class ReleaseAdapter : RecyclerView.Adapter<ReleaseAdapter.ReleaseViewHolder>() {
+class ReleaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var concatAdapter = ConcatAdapter().apply {
+        registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                this@ReleaseAdapter.notifyDataSetChanged()
+                super.onChanged()
+            }
+        })
+    }
+
     var releases: List<Release> = emptyList()
         set(value) {
+            val groupedReleases = value.groupBy { it.tier }
+            val adapters = concatAdapter.adapters
+            groupedReleases.forEach { (tier, tierReleases) ->
+                val indexOfPresent =
+                    adapters.indexOfFirst { (it as TierReleaseAdapter).tier == tier }
+                if (indexOfPresent == -1) {
+                    val tierReleaseAdapter =
+                        TierReleaseAdapter(tier)
+                    concatAdapter.addAdapter(tierReleaseAdapter)
+                    tierReleaseAdapter.releases = tierReleases
+                } else {
+                    (adapters[indexOfPresent] as TierReleaseAdapter).releases = releases
+                }
+            }
             field = value
-            notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReleaseViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        return ReleaseViewHolder(
-            ReleasedGridItemBinding.inflate(layoutInflater)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        concatAdapter.onCreateViewHolder(parent, viewType)
+
+    override fun getItemCount(): Int = concatAdapter.itemCount
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+        concatAdapter.onBindViewHolder(holder, position)
+
+    override fun getItemViewType(position: Int): Int = concatAdapter.getItemViewType(position)
+
+    fun isHeader(position: Int): Boolean {
+        var cursor = 0
+        concatAdapter.adapters.forEach { adapter ->
+            if (position == cursor) return true
+            cursor += adapter.itemCount
+        }
+        return false
     }
 
-    override fun onBindViewHolder(holder: ReleaseViewHolder, position: Int) {
-        holder.bind(releases[position])
-    }
-
-    override fun getItemCount(): Int = releases.size
-
-    class ReleaseViewHolder(private val binding: ReleasedGridItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: Release) {
-            with(binding) {
-                releaseName.text = model.releaseName
-                artistName.text = model.artistName
-                type.text = getStringType(model.type, binding.root.resources)
-
-                Glide.with(itemView)
-                    .load(model.artworkUrl100)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(artwork)
-            }
-        }
-
-        private fun getStringType(type: ReleaseType, resources: Resources): String {
-            return when (type) {
-                ReleaseType.Single -> resources.getString(R.string.single)
-                ReleaseType.Album -> resources.getString(R.string.album)
-            }
-        }
+    companion object {
+        const val TIER_HEADER_TYPE = 0
+        const val RELEASE_TYPE = 1
     }
 }
 

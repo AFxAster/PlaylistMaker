@@ -23,7 +23,7 @@ class ReleseadInteractorImpl(
             }
 
             followedArtists.forEach { artist ->
-                releasedRepository.getReleasesFrom(artist.id, date).collect releases@{
+                releasedRepository.getReleasesFrom(artist, date).collect releases@{
                     it ?: return@releases
                     releases.addAll(it)
                 }

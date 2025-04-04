@@ -29,9 +29,7 @@ class PlaylistLibraryFragment : Fragment() {
     private val itemDecoration = GridSpacingItemDecoration(
         spanCount = 2,
         horizontalSpacing = 8,
-        verticalSpacing = 16,
-        horizontalEdgeSpacing = 16,
-        verticalEdgeSpacing = 0
+        verticalSpacing = 16
     )
 
     override fun onCreateView(

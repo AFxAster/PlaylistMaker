@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.example.playlistmaker.R
 import com.example.playlistmaker.common.presentation.GridSpacingItemDecoration
 import com.example.playlistmaker.databinding.DialogSelectArtistBinding
@@ -19,6 +21,7 @@ import com.example.playlistmaker.released.domain.entity.Artist
 import com.example.playlistmaker.released.domain.entity.Release
 import com.example.playlistmaker.released.presentation.state.ArtistState
 import com.example.playlistmaker.released.presentation.state.ReleasedState
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,14 +31,23 @@ class ReleasedFragment : Fragment() {
 
     private var _dialogBinding: DialogSelectArtistBinding? = null
     private val dialogBinding get() = _dialogBinding!!
+    private val dialogBuilder by lazy {
+        MaterialAlertDialogBuilder(requireContext(), R.style.ConfirmationDialog)
+            .setTitle(R.string.add_artist)
+            .setPositiveButton(R.string.ok, null)
+            .setNegativeButton(R.string.cancel, null)
+            .setOnDismissListener {
+                viewModel.getArtistState().removeObservers(viewLifecycleOwner)
+                viewModel.clearArtists()
+                _dialogBinding = null
+            }
+    }
 
     private val adapter = ReleaseAdapter()
     private val itemDecoration = GridSpacingItemDecoration(
         spanCount = 2,
         horizontalSpacing = 8,
         verticalSpacing = 16,
-        horizontalEdgeSpacing = 16,
-        verticalEdgeSpacing = 0
     )
 
     private val artistAdapter = ArtistAdapter()
@@ -57,6 +69,18 @@ class ReleasedFragment : Fragment() {
             releasedRecyclerView.adapter = adapter
             releasedRecyclerView.addItemDecoration(itemDecoration)
 
+            val glm = GridLayoutManager(requireContext(), 2)
+            glm.spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (adapter.isHeader(position)) {
+                        true -> 2
+
+                        false -> 1
+                    }
+                }
+            }
+            releasedRecyclerView.layoutManager = glm
+
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.follow_artist -> showAddArtistDialog()
@@ -64,18 +88,6 @@ class ReleasedFragment : Fragment() {
                 true
             }
         }
-
-//        artistAdapter.artists = listOf(
-//            Artist(
-//                id = "1564157271",
-//                name = "bastiense"
-//            ),
-//            Artist(
-//                id = "1595600259",
-//                name = "MONRAU"
-//            ),
-//        )
-
 
         viewModel.getState().observe(viewLifecycleOwner, ::render)
         // TODO ченкуть про соотношение в разметке для элемента
@@ -98,16 +110,29 @@ class ReleasedFragment : Fragment() {
     }
 
     private fun showAddArtistDialog() {
+        initDialog()
+
+        val dialog = dialogBuilder.setView(dialogBinding.root).show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (requireHaveTier()) {
+                val tier = dialogBinding.tierEditText.text.toString().toInt()
+                viewModel.followSelectedArtist(tier)
+                dialog.dismiss()
+            }
+        }
+
+        viewModel.getArtistState().observe(viewLifecycleOwner, ::renderArtistDialog)
+    }
+
+    private fun initDialog() {
         _dialogBinding = DialogSelectArtistBinding.inflate(layoutInflater)
+
         with(dialogBinding) {
             clearButton.setOnClickListener {
                 autocompleteInput.setText("")
                 hideKeyboard(clearButton.windowToken)
             }
             autocompleteInput.setAdapter(artistAdapter)
-//            autocompleteInput.setOnClickListener {
-//                autocompleteInput.showDropDown()
-//            }
         }
 
         with(dialogBinding.autocompleteInput) {
@@ -129,26 +154,20 @@ class ReleasedFragment : Fragment() {
                 viewModel.selectedArtist = it
             }
         }
+    }
 
-
-        AlertDialog.Builder(requireContext())
-            .setView(dialogBinding.root)
-            .setTitle(R.string.add_artist)
-            .setPositiveButton(R.string.ok) { dialog, id ->
-                viewModel.followSelectedArtist()
+    private fun requireHaveTier(): Boolean {
+        with(dialogBinding) {
+            val input = tierEditText.text.toString()
+            if (input.isBlank()) {
+                tierEditText.setHintTextColor(
+                    resources.getColor(R.color.YP_red, requireContext().theme)
+                )
+                return false
+            } else {
+                return true
             }
-            .setNegativeButton(R.string.cancel) { dialog, id ->
-                dialog.cancel()
-            }
-            .setOnDismissListener {
-                viewModel.getArtistState().removeObservers(viewLifecycleOwner)
-                _dialogBinding = null
-                viewModel.clearArtists()
-            }
-            .create()
-            .show()
-
-        viewModel.getArtistState().observe(viewLifecycleOwner, ::renderArtistDialog)
+        }
     }
 
     private fun renderArtistDialog(state: ArtistState) {

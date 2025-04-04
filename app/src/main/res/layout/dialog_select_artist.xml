@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <com.example.playlistmaker.released.presentation.AutoCompleteTextViewWithoutFiltering
         android:id="@+id/autocomplete_input"
@@ -37,5 +38,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/loading"
         app:layout_constraintTop_toTopOf="@id/autocomplete_input" />
+
+    <EditText
+        android:id="@+id/tier_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/tier"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@id/autocomplete_input"
+        app:layout_constraintTop_toBottomOf="@id/autocomplete_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

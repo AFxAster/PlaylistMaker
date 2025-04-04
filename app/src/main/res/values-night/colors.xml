@@ -9,4 +9,6 @@
     <color name="audio_player_additional_button">@color/YP_white_transparent_25</color>
 
     <color name="bottom_sheet_stick">@color/YP_white</color>
+
+    <color name="tier_header">@color/YP_white_transparent_20</color>
 </resources>

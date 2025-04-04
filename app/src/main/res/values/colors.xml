@@ -9,6 +9,8 @@
     <color name="YP_red">#F56B6C</color>
     <color name="YP_black_transparent_25">#401A1B22</color>
     <color name="YP_white_transparent_25">#40FFFFFF</color>
+    <color name="YP_white_transparent_20">#33FFFFFF</color>
+    <color name="YP_black_transparent_20">#331A1B22</color>
 
     <color name="background_search_field">@color/YP_light_gray</color>
     <color name="on_search_field">@color/YP_text_gray</color>
@@ -19,4 +21,6 @@
     <color name="audio_player_additional_button">@color/YP_black_transparent_25</color>
 
     <color name="bottom_sheet_stick">@color/YP_light_gray</color>
+
+    <color name="tier_header">@color/YP_black_transparent_20</color>
 </resources>

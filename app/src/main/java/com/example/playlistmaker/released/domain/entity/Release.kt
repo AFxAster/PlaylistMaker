@@ -7,6 +7,7 @@ data class Release(
     val releaseName: String,
     val artistName: String,
     val type: ReleaseType,
-    val artworkUrl100: String,
-    val releaseDate: Date
+    val artworkUrl512: String,
+    val releaseDate: Date,
+    var tier: Int = 3
 )

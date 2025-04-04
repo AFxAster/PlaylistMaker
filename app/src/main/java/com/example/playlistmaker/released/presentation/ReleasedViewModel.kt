@@ -73,10 +73,10 @@ class ReleasedViewModel(
         artistState.value = ArtistState.Content(emptyList())
     }
 
-    fun followSelectedArtist() {
+    fun followSelectedArtist(tier: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             selectedArtist?.let {
-                artistsInteractor.followArtist(it)
+                artistsInteractor.followArtist(it.copy(tier = tier))
             }
         }
     }

@@ -11,7 +11,7 @@ fun ReleaseDTO.toRelease(): Release {
     return Release(
         id = collectionId,
         artistName = artistName,
-        artworkUrl100 = artworkUrl100,
+        artworkUrl512 = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"),
         releaseDate = releaseDate,
         releaseName = collectionName.removeSuffix(" - Single"),
         type = collectionName.run {
@@ -26,14 +26,16 @@ fun ReleaseDTO.toRelease(): Release {
 fun Artist.toFollowedArtistEntity(): FollowedArtistEntity {
     return FollowedArtistEntity(
         id = id,
-        name = name
+        name = name,
+        tier = tier
     )
 }
 
 fun FollowedArtistEntity.toArtist(): Artist {
     return Artist(
         id = id,
-        name = name
+        name = name,
+        tier = tier
     )
 }
 

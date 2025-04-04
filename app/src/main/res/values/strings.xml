@@ -84,4 +84,6 @@
 
     <string name="single">Сингл</string>
     <string name="ok">OK</string>
+
+    <string name="tier">Tier</string>
 </resources>
