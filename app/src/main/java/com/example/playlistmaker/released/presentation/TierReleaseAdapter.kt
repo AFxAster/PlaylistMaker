@@ -34,7 +34,7 @@ class TierReleaseAdapter(
                 ReleasedGridItemBinding.inflate(layoutInflater, parent, false)
             )
 
-            else -> throw Exception("UNKNOWN TYPE")
+            else -> error("UNKNOWN TYPE")
         }
     }
 

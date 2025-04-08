@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data.network
 
-import android.util.Log
 import com.example.playlistmaker.released.data.dto.GetArtistsRequest
 import com.example.playlistmaker.released.data.dto.GetReleasesByArtistIdRequest
 import com.example.playlistmaker.search.data.ITunesNetworkClient
@@ -48,7 +47,6 @@ class ITunesRetrofitNetworkClient(private val api: ITunesApi) : ITunesNetworkCli
                 try {
                     api.getReleasesByArtistId(requestParams.artistId).apply { responseCode = 200 }
                 } catch (ex: Exception) {
-                    Log.d("my", ex.toString())
                     Response().apply { responseCode = 400 }
                 }
             }

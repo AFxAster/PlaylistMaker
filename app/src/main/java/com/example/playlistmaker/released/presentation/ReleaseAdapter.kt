@@ -29,8 +29,15 @@ class ReleaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     concatAdapter.addAdapter(tierReleaseAdapter)
                     tierReleaseAdapter.releases = tierReleases
                 } else {
-                    (adapters[indexOfPresent] as TierReleaseAdapter).releases = releases
+                    (adapters[indexOfPresent] as TierReleaseAdapter).releases = tierReleases
                 }
+            }
+
+            adapters.forEach { adapter ->
+                adapter as TierReleaseAdapter
+
+                if (!groupedReleases.keys.contains(adapter.tier))
+                    adapter.releases = emptyList()
             }
             field = value
         }

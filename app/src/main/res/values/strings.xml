@@ -86,4 +86,7 @@
     <string name="ok">OK</string>
 
     <string name="tier">Tier</string>
+
+    <string name="edit_dates">Изменить даты</string>
+    <string name="invalid_dates">Неверные даты</string>
 </resources>

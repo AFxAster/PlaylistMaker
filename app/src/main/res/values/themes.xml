@@ -24,4 +24,9 @@
     <style name="ConfirmationDialog" parent="MaterialAlertDialog.Material3">
         <item name="colorPrimary">@color/YP_blue</item>
     </style>
+
+    <style name="DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/YP_blue</item>
+        <item name="colorSecondary">@color/YP_blue</item>
+    </style>
 </resources>

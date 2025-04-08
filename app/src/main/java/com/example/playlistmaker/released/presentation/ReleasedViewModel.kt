@@ -1,6 +1,5 @@
 package com.example.playlistmaker.released.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,10 +11,11 @@ import com.example.playlistmaker.released.domain.entity.Artist
 import com.example.playlistmaker.released.presentation.state.ArtistState
 import com.example.playlistmaker.released.presentation.state.ReleasedState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.ZoneId
-import java.util.Date
+import java.util.Calendar
 
 class ReleasedViewModel(
     private val releasedInteractor: ReleasedInteractor,
@@ -30,22 +30,33 @@ class ReleasedViewModel(
 
     var selectedArtist: Artist? = null
 
+    var startDate: Calendar? = null
+    var endDate: Calendar? = null
+
     private val debounceArtistRequestLambda = debounceWithLastCall<String>(
         delayMillis = ARTIST_REQUEST_DELAY,
         coroutineScope = viewModelScope,
         action = ::artistRequest
     )
 
+    private var releasesJob: Job? = null
+
     init {
+        startDate = getLastFridayFrom(Calendar.getInstance())
+        endDate = Calendar.getInstance().apply {
+            set(Calendar.HOUR, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
+        releasesJob?.cancel()
         state.value = ReleasedState.Loading
-        viewModelScope.launch {
-            val lastFriday = getLastFridayFrom(Date())
-            releasedInteractor.getReleasesFrom(lastFriday).collect {
-                Log.d("my", "in vm $it")
+        releasesJob = viewModelScope.launch {
+            releasedInteractor.getReleases(startDate, endDate).collect {
                 it?.let {
                     state.value = ReleasedState.Content(it)
                 }
@@ -55,9 +66,7 @@ class ReleasedViewModel(
 
     fun debounceRequest(query: String) {
         artistState.value = ArtistState.Loading
-
         debounceArtistRequestLambda(query)
-
     }
 
     private fun artistRequest(query: String) {
@@ -86,7 +95,7 @@ class ReleasedViewModel(
     }
 }
 
-private fun getLastFridayFrom(date: Date): Date {
+private fun getLastFridayFrom(date: Calendar): Calendar {
     val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     val dayOfWeek = localDate.dayOfWeek
 
@@ -97,5 +106,15 @@ private fun getLastFridayFrom(date: Date): Date {
     }
 
     val lastFridayLocalDate = localDate.minusDays(daysToSubtract.toLong())
-    return Date.from(lastFridayLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+    val calendar = Calendar.getInstance()
+    calendar.set(
+        lastFridayLocalDate.year,
+        lastFridayLocalDate.monthValue - 1,
+        lastFridayLocalDate.dayOfMonth,
+        0,
+        0,
+        0
+    )
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar
 }

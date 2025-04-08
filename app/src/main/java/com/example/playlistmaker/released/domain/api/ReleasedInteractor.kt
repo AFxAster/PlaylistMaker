@@ -2,8 +2,8 @@ package com.example.playlistmaker.released.domain.api
 
 import com.example.playlistmaker.released.domain.entity.Release
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
+import java.util.Calendar
 
 interface ReleasedInteractor {
-    fun getReleasesFrom(date: Date): Flow<List<Release>?>
+    fun getReleases(from: Calendar?, to: Calendar?): Flow<List<Release>?>
 }

@@ -126,7 +126,7 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun showTracks(tracks: List<Track>) {
-        tracksAdapter.trackList = tracks.map { it.toTrackUI() }.reversed()
+        tracksAdapter.trackList = tracks.map { it.toTrackUI() }
 
         val tracksNumber = tracks.size
         val tracksTime = ceil(tracks.sumOf { it.trackTimeMillis } / 60000.0).toInt()

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.example.playlistmaker.R
@@ -22,10 +22,11 @@ import com.example.playlistmaker.released.domain.entity.Release
 import com.example.playlistmaker.released.presentation.state.ArtistState
 import com.example.playlistmaker.released.presentation.state.ReleasedState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.scope.ScopeFragment
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 
-class ReleasedFragment : Fragment() {
+class ReleasedFragment : ScopeFragment() {
     private var _binding: FragmentReleasedBinding? = null
     private val binding get() = _binding!!
 
@@ -52,7 +53,7 @@ class ReleasedFragment : Fragment() {
 
     private val artistAdapter = ArtistAdapter()
 
-    private val viewModel: ReleasedViewModel by viewModel()
+    private val viewModel: ReleasedViewModel by activityViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +85,7 @@ class ReleasedFragment : Fragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.follow_artist -> showAddArtistDialog()
+                    R.id.edit_dates -> showDatePicker()
                 }
                 true
             }
@@ -190,6 +192,10 @@ class ReleasedFragment : Fragment() {
         with(dialogBinding) {
             loading.isVisible = true
         }
+    }
+
+    private fun showDatePicker() {
+        findNavController().navigate(R.id.action_releasedFragment_to_editDatesDialogFragment)
     }
 
     private fun hideKeyboard(windowToken: IBinder) {

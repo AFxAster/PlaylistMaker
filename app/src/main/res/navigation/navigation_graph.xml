@@ -66,5 +66,13 @@
         android:id="@+id/releasedFragment"
         android:name="com.example.playlistmaker.released.presentation.ReleasedFragment"
         android:label="ReleasedFragment"
-        tools:layout="@layout/fragment_released" />
+        tools:layout="@layout/fragment_released">
+        <action
+            android:id="@+id/action_releasedFragment_to_editDatesDialogFragment"
+            app:destination="@id/editDatesDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/editDatesDialogFragment"
+        android:name="com.example.playlistmaker.editdatesdialog.presentation.EditDatesDialogFragment"
+        android:label="EditDatesDialogFragment" />
 </navigation>

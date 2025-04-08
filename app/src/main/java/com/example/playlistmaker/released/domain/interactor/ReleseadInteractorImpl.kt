@@ -8,13 +8,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.util.Date
+import java.util.Calendar
 
 class ReleseadInteractorImpl(
     private val releasedRepository: ReleasedRepository,
     private val followedArtistsRepository: FollowedArtistsRepository
 ) : ReleasedInteractor {
-    override fun getReleasesFrom(date: Date): Flow<List<Release>?> = flow {
+    override fun getReleases(from: Calendar?, to: Calendar?): Flow<List<Release>?> = flow {
         val releases: MutableList<Release> = mutableListOf()
         followedArtistsRepository.getFollowedArtists().collect followed@{ followedArtists ->
             if (followedArtists == null) {
@@ -23,7 +23,7 @@ class ReleseadInteractorImpl(
             }
 
             followedArtists.forEach { artist ->
-                releasedRepository.getReleasesFrom(artist, date).collect releases@{
+                releasedRepository.getReleases(artist, from, to).collect releases@{
                     it ?: return@releases
                     releases.addAll(it)
                 }

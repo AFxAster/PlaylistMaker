@@ -11,4 +11,6 @@
     <color name="bottom_sheet_stick">@color/YP_white</color>
 
     <color name="tier_header">@color/YP_white_transparent_20</color>
+
+    <color name="select_date_bg">@color/YP_white_transparent_20</color>
 </resources>
